@@ -14,7 +14,7 @@ function Header() {
               height="30"
               className="d-inline-block align-top"
             />{' '}
-            Counter-Application
+            Auto-Counter-Application
           </Navbar.Brand>
         </Container>
       </Navbar>

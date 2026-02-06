@@ -8,7 +8,6 @@ function Counter() {
     // when each time the button is clicked the button name "pause" and "resume" will change as toggle button
 
     
-
     function reset() {
         setCounter(0);
     }
@@ -18,7 +17,7 @@ function Counter() {
         <div>
             <div className='container border' style={{ marginTop: "200px" }}>
                 <div className='text-center'>
-                    <h1 className='text-primary'>Counter-Application</h1>
+                    <h1 className='text-primary'>Auto-Counter-Application</h1>
                     <h1 className='fw-bolder'>{counter}</h1>
                 </div>
                 <div className='text-center m-3 p-4'>
