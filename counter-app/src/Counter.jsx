@@ -20,7 +20,7 @@ function Counter() {
     }
     return (
         <div>
-            <div className='container border' style={{ marginTop: "200px" }}>
+            <div className='container' style={{ marginTop: "200px" }}>
                 <div className='text-center'>
                     <h1 className='text-primary'>Counter-Application</h1>
                     <h1 className='fw-bolder'>{counter}</h1>
