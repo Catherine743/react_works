@@ -22,8 +22,11 @@ function Forecast({ city }) {
         getForecast();
     }, [city]); // runs when city changes
 
+    if (!forecast.length) return null;
+
     return (
         <div className="container mt-4">
+            <h4 className="m-5">Weather Forecast</h4>
             <div className="d-flex justify-content-evenly gap-3 ">
                 {forecast.map((item, i) => (
                     <div key={i} className="card p-3 text-center shadow" style={{
