@@ -11,7 +11,7 @@ function Landingpage() {
       <section id='bg1'>
         <div className='row pt-5'>
           <div className='col-12 col-md-4'></div>
-          <div className='col-12 col-md-4 box py-5 border rounded mt-5 text-center'>
+          <div className='col-12 col-md-4 box py-5 border rounded mt-5 text-center bg-white bg-opacity-75'>
             <h3>Designed to get hired.</h3>
             <h4>Your skills, your story, your next job - all in one.</h4>
             <Link to={'/resume-generator'}>
