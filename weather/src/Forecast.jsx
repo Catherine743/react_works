@@ -4,43 +4,66 @@ const API_KEY = "72a14f664289d301918a2ed81ad7b437";
 
 function Forecast({ city }) {
     const [forecast, setForecast] = useState([]);
+    const [error, setError] = useState("");
 
     useEffect(() => {
-        if (!city) return;
+        if (!city) {
+            setForecast([]);
+            setError("");
+            return;
+        }
 
         const getForecast = async () => {
-            const res = await fetch(
-                `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
-            );
+            try {
+                const res = await fetch(
+                    `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
+                );
+                const data = await res.json();
 
-            const data = await res.json();
+                if (data.cod !== "200") {
+                    setError("City not found");
+                    setForecast([]);
+                    return;
+                }
 
-            const daily = data.list.filter((item, index) => index % 8 === 0);
-            setForecast(daily);
+                const daily = data.list.filter((item, index) => index % 8 === 0);
+                setForecast(daily);
+                setError("");
+            } catch (err) {
+                setError("Something went wrong");
+                setForecast([]);
+            }
         };
 
         getForecast();
-    }, [city]); // runs when city changes
+    }, [city]);
 
+    if (!city) return null;
+    if (error) return <p className="text-danger mt-3 text-center">{error}</p>;
     if (!forecast.length) return null;
 
     return (
         <div className="container mt-4">
-            <h4 className="m-5">Weather Forecast</h4>
-            <div className="d-flex justify-content-evenly gap-3 ">
+            <h4 className="m-5 text-center">Weather Forecast</h4>
+            <div className="d-flex justify-content-evenly gap-3 flex-wrap">
                 {forecast.map((item, i) => (
-                    <div key={i} className="card p-3 text-center shadow" style={{
-                        backgroundImage:
-                            "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e')",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        backgroundRepeat: "no-repeat",
-                    }}>
+                    <div
+                        key={i}
+                        className="card p-3 text-center shadow"
+                        style={{
+                            backgroundImage:
+                                "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e')",
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat",
+                            minWidth: "150px",
+                        }}
+                    >
                         <div
                             style={{
-                                backgroundColor: "rgba(255, 255, 255, 0.6)", // transparent layer
+                                backgroundColor: "rgba(255, 255, 255, 0.6)",
                                 padding: "20px",
-                                borderRadius: "8px"
+                                borderRadius: "8px",
                             }}
                         >
                             <h6>{item.dt_txt.split(" ")[0]}</h6>
