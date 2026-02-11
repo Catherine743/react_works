@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 function Preview() {
   return (
     <div>
-      <div className='flex-column'>
+      <div className='flex-column' style={{marginTop : "100px"}}>
         <Box>
           <Paper elevation={5} id='result'>
             <Typography variant="h4" component="h2" align='center'>
