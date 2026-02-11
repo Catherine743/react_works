@@ -22,7 +22,7 @@ function Header() {
               aria-label="menu"
               sx={{ mr: 2 }}
             >
-              <img width={'70px'} src="https://cdn-icons-gif.flaticon.com/16664/16664305.gif" alt="logo" />
+              <img width={'70px'} src="https://creazilla-store.fra1.digitaloceanspaces.com/icons/3432579/resume-icon-md.png" alt="logo" />
             </IconButton>
 
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
