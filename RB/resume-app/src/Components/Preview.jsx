@@ -6,11 +6,23 @@ import { Link } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-
+import { FaFileDownload } from 'react-icons/fa';
+import { FaHistory } from 'react-icons/fa';
+import Edit from './Edit';
 function Preview() {
   return (
     <div>
       <div className='flex-column' style={{marginTop : "100px"}}>
+        <div className='d-flex justify-content-end align-items-center'>
+          {/* download */}
+          <button className='btn fs-3 text-primary'><FaFileDownload/></button>
+          {/* edit */}
+          <div><Edit /></div>
+          {/* history */ }
+          <Link to= {'/history'} className='btn fs-3 text-primary'><FaHistory /></Link>
+          {/* back */ }
+          <Link to= {'/resume-generator'} className='btn text-primary'>Back</Link>
+        </div>
         <Box>
           <Paper elevation={5} id='result'>
             <Typography variant="h4" component="h2" align='center'>

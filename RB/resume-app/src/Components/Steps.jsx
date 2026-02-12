@@ -10,6 +10,9 @@ import Stack from '@mui/material/Stack';
 function Steps() {
   // stepper steps
   const steps = ['Basic Information', 'Contact Details', 'Education Details', 'Work Experience', 'Skills & Certifications', 'Review & Submit'];
+  
+  // skills array
+  const suggestionSkills = ['REACT', 'ANGULAR', 'UI/UX', 'PYTHON', 'NODE', 'EXPRESS', 'MONGODB', 'JAVASCRIPT']
 
   // state 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -121,7 +124,9 @@ function Steps() {
             <div>
               <h5>Suggestions : </h5>
               <div className='d-flex flex-wrap justify-content-between'>
-                <Button variant='outlined'>userSkill</Button>
+                { suggestionSkills.map(userSkill => (
+                  <Button variant='outlined'> { userSkill }</Button>
+                ))}
               </div>
             </div>
             <div>
