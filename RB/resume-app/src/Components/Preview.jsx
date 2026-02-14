@@ -35,8 +35,8 @@ function Preview() {
               Location | Email | Phone
             </Typography>
             <Typography variant="body2" align='center' mb={4}>
-              <Link href="" target="_blank">GitHub</Link>
-              <Link href="" target="_blank">LinkedIn</Link>
+              <Link href="" target="_blank">GitHub</Link> |
+              <Link href="" target="_blank">LinkedIn</Link> |
               <Link href="" target="_blank">Portfolio</Link>
             </Typography>
             <Divider>Summary</Divider>
