@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Preview from '../Components/Preview'
 import Steps from '../Components/Steps'
+import { useState } from 'react'
 function Form() {
 
   const[userInput, setUserInput] = useState({
