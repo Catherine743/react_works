@@ -4,8 +4,8 @@ import Steps from '../Components/Steps'
 import { useState } from 'react'
 function Form() {
 
-  const[userInput, setUserInput] = useState({
-    personalDetails : {
+  const[userInput, setUserInput] = useState({ // state 
+    personalDetails : { // This will go to JSON server
       name: "",
       jobTitle : "",
       location : "",
@@ -50,7 +50,7 @@ function Form() {
                   <Steps userInput={userInput} setUserInput={setUserInput}/>
               </div>
               <div className='col-6'>
-                  <Preview />
+                  <Preview userInput={userInput} />
               </div>
           </div>
       </div>

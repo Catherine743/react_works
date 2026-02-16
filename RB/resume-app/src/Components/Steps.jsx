@@ -7,9 +7,12 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-function Steps({userInput,setUserInput}) {
+function Steps({userInput,setUserInput}) { // props should use within brackets
   console.log(userInput);
   
+  // useref
+  const userSkillsRef = React.useRef()
+
   // stepper steps
   const steps = ['Basic Information', 'Contact Details', 'Education Details', 'Work Experience', 'Skills & Certifications', 'Review & Submit'];
   
@@ -67,6 +70,23 @@ function Steps({userInput,setUserInput}) {
   const handleReset = () => {
     setActiveStep(0);
   };
+  
+  // addSkill
+  const addSkill = (inputSkill) => {
+    if (inputSkill) {
+      if (userInput.skills.includes(inputSkill)) {
+        alert("Skill already exists")
+      }
+      else {
+        setUserInput({...userInput, skills: [...userInput.skills, inputSkill]})
+      }
+    }
+  }
+
+  // removeSkill
+  const removeSkill = (skill) => {
+    setUserInput({...userInput, skills: userInput.skills.filter(item => item != skill)})
+  }
 
   // renderStepContent
   const renderStepContent = (step) => {
@@ -120,23 +140,25 @@ function Steps({userInput,setUserInput}) {
           <h3>Skills</h3>
           <Box sx={{ width: '100%' }}>
             <Stack spacing={2}>
-              <input type="text" className='form-control' placeholder='Add skills' />
-              <Button className='me-3' variant="text" sx={{ maxWidth: '40px' }}>Add</Button>
+              <input ref={userSkillsRef} type="text" className='form-control' placeholder='Add skills' />
+              <Button onClick={() => addSkill(userSkillsRef.current.value)} className='me-3' variant="text" sx={{ maxWidth: '40px' }}>Add</Button>
             </Stack>
             <div>
               <h5>Suggestions : </h5>
               <div className='d-flex flex-wrap justify-content-between'>
                 { suggestionSkills.map(userSkill => (
-                  <Button variant='outlined'> { userSkill }</Button>
+                  <Button onClick={() => addSkill(userSkill)} variant='outlined'> { userSkill }</Button>
                 ))}
               </div>
             </div>
             <div>
               <h5>Added Skills : </h5>
               <div className='d-flex justify-content-between'>
+                { userInput.skills.length > 0 ? userInput.skills.map(( skill => (
                 <span className='btn btn-primary d-flex align-items-center justify-content-center'>
-                  Skill<button className='btn text-light'>X</button>
+                  { skill }<button className='btn text-light' onClick={() => removeSkill(skill)}>X</button>
                 </span>
+                ))) : <p>Nothing to display</p> }
               </div>
             </div>
           </Box>
