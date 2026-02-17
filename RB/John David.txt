@@ -1,0 +1,20 @@
+John David
+Developer
+Bengaluru
+johndavid@gmail.com
+9898989898
+github.com/John743
+linkedin.com/in/john-David
+vercel.com/john743s-portfolio
+
+B.Tech
+ABC College
+Bengaluru University
+2020
+
+JavaScript Developer
+TCS
+Bengaluru
+2 years
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent feugiat, libero vel tincidunt cursus, magna sapien facilisis nisi, sed fermentum purus erat vitae enim. Integer sit amet augue non neque consequat tempor. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.
