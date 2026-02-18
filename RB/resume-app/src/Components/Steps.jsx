@@ -7,15 +7,17 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-function Steps({userInput,setUserInput}) { // props should use within brackets
+import { addResumeAPI } from '../services/allAPI';
+import  swal  from 'sweetalert';
+function Steps({ userInput, setUserInput }) { // props should use within brackets
   console.log(userInput);
-  
+
   // useref
   const userSkillsRef = React.useRef()
 
   // stepper steps
   const steps = ['Basic Information', 'Contact Details', 'Education Details', 'Work Experience', 'Skills & Certifications', 'Review & Submit'];
-  
+
   // skills array
   const suggestionSkills = ['REACT', 'ANGULAR', 'UI/UX', 'PYTHON', 'NODE', 'EXPRESS', 'MONGODB', 'JAVASCRIPT']
 
@@ -70,7 +72,7 @@ function Steps({userInput,setUserInput}) { // props should use within brackets
   const handleReset = () => {
     setActiveStep(0);
   };
-  
+
   // addSkill
   const addSkill = (inputSkill) => {
     if (inputSkill) {
@@ -78,14 +80,14 @@ function Steps({userInput,setUserInput}) { // props should use within brackets
         alert("Skill already exists")
       }
       else {
-        setUserInput({...userInput, skills: [...userInput.skills, inputSkill]})
+        setUserInput({ ...userInput, skills: [...userInput.skills, inputSkill] })
       }
     }
   }
 
   // removeSkill
   const removeSkill = (skill) => {
-    setUserInput({...userInput, skills: userInput.skills.filter(item => item != skill)})
+    setUserInput({ ...userInput, skills: userInput.skills.filter(item => item != skill) })
   }
 
   // renderStepContent
@@ -95,9 +97,9 @@ function Steps({userInput,setUserInput}) { // props should use within brackets
         <div>
           <h3>Personal Details</h3>
           <div className='d-flex row p-3'>
-            <TextField onChange={e => setUserInput({...userInput,personalDetails : {...userInput.personalDetails, name: e.target.value}})} id="standard-basic" label="Full Name" variant="standard" value={userInput.personalDetails.name}/>
-            <TextField onChange={e => setUserInput({...userInput,personalDetails : {...userInput.personalDetails, jobTitle: e.target.value}})} id="standard-basic" label="Job Title" variant="standard" value={userInput.personalDetails.jobTitle}/>
-            <TextField onChange={e => setUserInput({...userInput,personalDetails : {...userInput.personalDetails, location: e.target.value}})} id="standard-basic" label="Location" variant="standard" value={userInput.personalDetails.location}/>
+            <TextField onChange={e => setUserInput({ ...userInput, personalDetails: { ...userInput.personalDetails, name: e.target.value } })} id="standard-basic" label="Full Name" variant="standard" value={userInput.personalDetails.name} />
+            <TextField onChange={e => setUserInput({ ...userInput, personalDetails: { ...userInput.personalDetails, jobTitle: e.target.value } })} id="standard-basic" label="Job Title" variant="standard" value={userInput.personalDetails.jobTitle} />
+            <TextField onChange={e => setUserInput({ ...userInput, personalDetails: { ...userInput.personalDetails, location: e.target.value } })} id="standard-basic" label="Location" variant="standard" value={userInput.personalDetails.location} />
           </div>
         </div>
       )
@@ -105,11 +107,11 @@ function Steps({userInput,setUserInput}) { // props should use within brackets
         <div>
           <h3>Contact Details</h3>
           <div className='d-flex row p-3'>
-            <TextField onChange={e => setUserInput({...userInput,personalDetails : {...userInput.personalDetails, email: e.target.value}})} id="standard-basic" label="Email" variant="standard" value={userInput.personalDetails.email}/>
-            <TextField onChange={e => setUserInput({...userInput,personalDetails : {...userInput.personalDetails, phone: e.target.value}})} id="standard-basic" label="Phone Number" variant="standard" value={userInput.personalDetails.phone}/>
-            <TextField onChange={e => setUserInput({...userInput,personalDetails : {...userInput.personalDetails, github: e.target.value}})} id="standard-basic" label="Github Profile Link" variant="standard" value={userInput.personalDetails.github}/>
-            <TextField onChange={e => setUserInput({...userInput,personalDetails : {...userInput.personalDetails, linkedIn: e.target.value}})} id="standard-basic" label="LinkedIn Profile Link" variant="standard" value={userInput.personalDetails.linkedIn}/>
-            <TextField onChange={e => setUserInput({...userInput,personalDetails : {...userInput.personalDetails, portfolio: e.target.value}})} id="standard-basic" label="Portfolio Link" variant="standard" value={userInput.personalDetails.portfolio}/>
+            <TextField onChange={e => setUserInput({ ...userInput, personalDetails: { ...userInput.personalDetails, email: e.target.value } })} id="standard-basic" label="Email" variant="standard" value={userInput.personalDetails.email} />
+            <TextField onChange={e => setUserInput({ ...userInput, personalDetails: { ...userInput.personalDetails, phone: e.target.value } })} id="standard-basic" label="Phone Number" variant="standard" value={userInput.personalDetails.phone} />
+            <TextField onChange={e => setUserInput({ ...userInput, personalDetails: { ...userInput.personalDetails, github: e.target.value } })} id="standard-basic" label="Github Profile Link" variant="standard" value={userInput.personalDetails.github} />
+            <TextField onChange={e => setUserInput({ ...userInput, personalDetails: { ...userInput.personalDetails, linkedIn: e.target.value } })} id="standard-basic" label="LinkedIn Profile Link" variant="standard" value={userInput.personalDetails.linkedIn} />
+            <TextField onChange={e => setUserInput({ ...userInput, personalDetails: { ...userInput.personalDetails, portfolio: e.target.value } })} id="standard-basic" label="Portfolio Link" variant="standard" value={userInput.personalDetails.portfolio} />
           </div>
         </div>
       )
@@ -117,10 +119,10 @@ function Steps({userInput,setUserInput}) { // props should use within brackets
         <div>
           <h3>Education Details</h3>
           <div className='d-flex row p-3'>
-            <TextField id="standard-basic" onChange={e => setUserInput({...userInput,educationDetails : {...userInput.educationDetails, course: e.target.value}})} label="Course Name" variant="standard" value={userInput.educationDetails.course}/>
-            <TextField id="standard-basic" onChange={e => setUserInput({...userInput,educationDetails : {...userInput.educationDetails, college: e.target.value}})} label="College Name" variant="standard" value={userInput.educationDetails.college}/>
-            <TextField id="standard-basic" onChange={e => setUserInput({...userInput,educationDetails : {...userInput.educationDetails, university: e.target.value}})} label="University" variant="standard" value={userInput.educationDetails.university}/>
-            <TextField id="standard-basic" onChange={e => setUserInput({...userInput,educationDetails : {...userInput.educationDetails, year: e.target.value}})} label="Year of Passout" variant="standard" value={userInput.educationDetails.year}/>
+            <TextField id="standard-basic" onChange={e => setUserInput({ ...userInput, educationDetails: { ...userInput.educationDetails, course: e.target.value } })} label="Course Name" variant="standard" value={userInput.educationDetails.course} />
+            <TextField id="standard-basic" onChange={e => setUserInput({ ...userInput, educationDetails: { ...userInput.educationDetails, college: e.target.value } })} label="College Name" variant="standard" value={userInput.educationDetails.college} />
+            <TextField id="standard-basic" onChange={e => setUserInput({ ...userInput, educationDetails: { ...userInput.educationDetails, university: e.target.value } })} label="University" variant="standard" value={userInput.educationDetails.university} />
+            <TextField id="standard-basic" onChange={e => setUserInput({ ...userInput, educationDetails: { ...userInput.educationDetails, year: e.target.value } })} label="Year of Passout" variant="standard" value={userInput.educationDetails.year} />
           </div>
         </div>
       )
@@ -128,10 +130,10 @@ function Steps({userInput,setUserInput}) { // props should use within brackets
         <div>
           <h3>Professional Details</h3>
           <div className='d-flex row p-3'>
-            <TextField onChange={e => setUserInput({...userInput,experience : {...userInput.experience, job: e.target.value}})} id="standard-basic" label="Job or Internship" variant="standard" value={userInput.experience.job}/>
-            <TextField onChange={e => setUserInput({...userInput,experience : {...userInput.experience, company: e.target.value}})} id="standard-basic" label="Company Name" variant="standard" value={userInput.experience.company}/>
-            <TextField onChange={e => setUserInput({...userInput,experience : {...userInput.experience, jobLocation: e.target.value}})} id="standard-basic" label="Location" variant="standard" value={userInput.experience.jobLocation}/>
-            <TextField onChange={e => setUserInput({...userInput,experience : {...userInput.experience, duration: e.target.value}})} id="standard-basic" label="Duration" variant="standard" value={userInput.experience.duration}/>
+            <TextField onChange={e => setUserInput({ ...userInput, experience: { ...userInput.experience, job: e.target.value } })} id="standard-basic" label="Job or Internship" variant="standard" value={userInput.experience.job} />
+            <TextField onChange={e => setUserInput({ ...userInput, experience: { ...userInput.experience, company: e.target.value } })} id="standard-basic" label="Company Name" variant="standard" value={userInput.experience.company} />
+            <TextField onChange={e => setUserInput({ ...userInput, experience: { ...userInput.experience, jobLocation: e.target.value } })} id="standard-basic" label="Location" variant="standard" value={userInput.experience.jobLocation} />
+            <TextField onChange={e => setUserInput({ ...userInput, experience: { ...userInput.experience, duration: e.target.value } })} id="standard-basic" label="Duration" variant="standard" value={userInput.experience.duration} />
           </div>
         </div>
       )
@@ -146,19 +148,19 @@ function Steps({userInput,setUserInput}) { // props should use within brackets
             <div>
               <h5>Suggestions : </h5>
               <div className='d-flex flex-wrap justify-content-between'>
-                { suggestionSkills.map(userSkill => (
-                  <Button onClick={() => addSkill(userSkill)} variant='outlined'> { userSkill }</Button>
+                {suggestionSkills.map(userSkill => (
+                  <Button onClick={() => addSkill(userSkill)} variant='outlined'> {userSkill}</Button>
                 ))}
               </div>
             </div>
             <div>
               <h5>Added Skills : </h5>
               <div className='d-flex justify-content-between'>
-                { userInput.skills.length > 0 ? userInput.skills.map(( skill => (
-                <span className='btn btn-primary d-flex align-items-center justify-content-center'>
-                  { skill }<button className='btn text-light' onClick={() => removeSkill(skill)}>X</button>
-                </span>
-                ))) : <p>Nothing to display</p> }
+                {userInput.skills.length > 0 ? userInput.skills.map((skill => (
+                  <span className='btn btn-primary d-flex align-items-center justify-content-center'>
+                    {skill}<button className='btn text-light' onClick={() => removeSkill(skill)}>X</button>
+                  </span>
+                ))) : <p>Nothing to display</p>}
               </div>
             </div>
           </Box>
@@ -184,6 +186,33 @@ function Steps({userInput,setUserInput}) { // props should use within brackets
       default: return Null
     }
   }
+
+  // addResume
+  const handleAddResume = async () => {
+    const { name, jobTitle, location } = userInput.personalDetails
+    if (name && jobTitle && location) {
+      // alert("Proceed to ApI call")
+      try {
+        // proceed to api call
+        const result = await addResumeAPI(userInput)
+        console.log(result);
+        swal("Success", "Resume Added", "success") // sweetalert
+        // swal.fire({              // sweetalert2
+        //   title: "Success!",
+        //   icon: "success",
+        //   draggable: true
+        // });
+      }
+      catch (err) {
+        console.log(err);
+
+      }
+    }
+    else {
+      alert("Please fill missing fields")
+    }
+  }
+
   return (
     <div>
       <Box sx={{ width: '100%' }}>
@@ -220,7 +249,7 @@ function Steps({userInput,setUserInput}) { // props should use within brackets
           <React.Fragment>
             <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
             <Box>
-                {renderStepContent(activeStep)}
+              {renderStepContent(activeStep)}
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
               <Button
@@ -237,9 +266,7 @@ function Steps({userInput,setUserInput}) { // props should use within brackets
                   Skip
                 </Button>
               )}
-              <Button onClick={handleNext}>
-                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-              </Button>
+              {activeStep === steps.length - 1 ? <Button onClick={handleAddResume}>Finish</Button> : <Button onClick={handleNext}>Next</Button>}
             </Box>
           </React.Fragment>
         )}
