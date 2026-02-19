@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -9,22 +9,54 @@ import Button from '@mui/material/Button';
 import { FaFileDownload } from 'react-icons/fa';
 import { FaHistory } from 'react-icons/fa';
 import Edit from './Edit';
-function Preview({userInput}) {
-  console.log(userInput);
-  
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import { addDownloadHistoryAPI } from '../services/allAPI';
+function Preview({userInput, finish}) {
+  // console.log(userInput);
+  const [downloadStatus, setDownloadStatus] = useState(false)
+  // download-resume
+  const downloadCV = async() => {
+    // to get screenshot
+    const input = document.getElementById('result')
+    const canvas = await html2canvas(input,{scale : 2})
+    const imgUrl = canvas.toDataURL("image/png")
+
+    // to create pdf
+    const pdf = new jsPDF()
+    const pdfWidth = pdf.internal.pageSize.getWidth()
+    const pdfHeight = pdf.internal.pageSize.getHeight()
+    pdf.addImage(imgUrl, 'PNG', 0, 0, pdfWidth, pdfHeight)
+    pdf.save('resume.pdf')
+
+    // getDate
+    const localTimeandDate = new Date()
+    const timeStamp = `${localTimeandDate.toLocaleDateString()},${localTimeandDate.toLocaleTimeString()}` 
+
+    // proceed to API call to add downloadHistory
+    try{
+      const result = await addDownloadHistoryAPI({...userInput, imgUrl, timeStamp})
+      console.log(result);
+      setDownloadStatus(true)
+    }
+    catch(err) {
+      console.log(err);
+    }
+  }
+
   return (
     <div>
       { userInput.personalDetails.name != "" && <div className='flex-column' style={{marginTop : "100px"}}>
-        <div className='d-flex justify-content-end align-items-center'>
+        { finish && <div className='d-flex justify-content-end align-items-center'>
           {/* download */}
-          <button className='btn fs-3 text-primary'><FaFileDownload/></button>
+          <button onClick={downloadCV} className='btn fs-3 text-primary'><FaFileDownload/></button>
           {/* edit */}
           <div><Edit /></div>
           {/* history */ }
-          <Link to= {'/history'} className='btn fs-3 text-primary'><FaHistory /></Link>
+          {downloadStatus && <Link to= {'/history'} className='btn fs-3 text-primary'><FaHistory /></Link>}
           {/* back */ }
           <Link to= {'/resume-generator'} className='btn text-primary'>Back</Link>
-        </div>
+        </div> }
         <Box>
           <Paper elevation={5} id='result'>
             <Typography variant="h4" component="h2" align='center'>

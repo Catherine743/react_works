@@ -9,7 +9,7 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import { addResumeAPI } from '../services/allAPI';
 import  swal  from 'sweetalert';
-function Steps({ userInput, setUserInput }) { // props should use within brackets
+function Steps({ userInput, setUserInput, setFinish }) { // props should use within brackets
   console.log(userInput);
 
   // useref
@@ -202,10 +202,11 @@ function Steps({ userInput, setUserInput }) { // props should use within bracket
         //   icon: "success",
         //   draggable: true
         // });
+        setFinish(true)
       }
       catch (err) {
         console.log(err);
-
+        swal("Error", "Can't complete the action", "error");
       }
     }
     else {
