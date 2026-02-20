@@ -9,7 +9,7 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import { addResumeAPI } from '../services/allAPI';
 import  swal  from 'sweetalert';
-function Steps({ userInput, setUserInput, setFinish }) { // props should use within brackets
+function Steps({ userInput, setUserInput, setFinish, setResumeId }) { // props should use within brackets
   console.log(userInput);
 
   // useref
@@ -203,6 +203,7 @@ function Steps({ userInput, setUserInput, setFinish }) { // props should use wit
         //   draggable: true
         // });
         setFinish(true)
+        setResumeId(result.data.id)
       }
       catch (err) {
         console.log(err);

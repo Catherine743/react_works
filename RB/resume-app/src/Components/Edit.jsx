@@ -5,8 +5,9 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-function Edit() {
-
+function Edit({resumeId}) {
+  console.log(resumeId);
+  
   const style = {
     position: 'absolute',
     top: '50%',

@@ -12,7 +12,10 @@ import Edit from './Edit';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { addDownloadHistoryAPI } from '../services/allAPI';
-function Preview({userInput, finish}) {
+function Preview({userInput, finish, resumeId, setUserInput}) {
+
+  console.log(resumeId);
+  
   // console.log(userInput);
   const [downloadStatus, setDownloadStatus] = useState(false)
   // download-resume
@@ -51,7 +54,7 @@ function Preview({userInput, finish}) {
           {/* download */}
           <button onClick={downloadCV} className='btn fs-3 text-primary'><FaFileDownload/></button>
           {/* edit */}
-          <div><Edit /></div>
+          <div><Edit resumeId={resumeId}/></div>
           {/* history */ }
           {downloadStatus && <Link to= {'/history'} className='btn fs-3 text-primary'><FaHistory /></Link>}
           {/* back */ }

@@ -32,6 +32,8 @@ function Form() {
   })
 
   const [finish, setFinish] = useState(false)
+
+  const [resumeId, setResumeId] = useState()
   return (
     <div>
       <div className='row p-5'>
@@ -40,7 +42,7 @@ function Form() {
           </div>
 
           <div className='col-8'>
-            <Preview userInput={userInput} finish={finish} setUserInput={setUserInput} />
+            <Preview userInput={userInput} finish={finish} setUserInput={setUserInput} resumeId={resumeId} />
           </div>
 
           <div className='col-1'>
@@ -51,7 +53,7 @@ function Form() {
 
           <div className='row p-5'>
             <div className='col-6'>
-              <Steps userInput={userInput} setUserInput={setUserInput} setFinish={setFinish} />
+              <Steps userInput={userInput} setUserInput={setUserInput} setFinish={setFinish} setResumeId={setResumeId}/>
             </div>
             <div className='col-6'>
               <Preview userInput={userInput} />

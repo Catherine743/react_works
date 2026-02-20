@@ -722,6 +722,64 @@
       "skills": [],
       "summary": "",
       "id": 24
+    },
+    {
+      "personalDetails": {
+        "name": "  fghj",
+        "jobTitle": "fghjkl",
+        "location": "fnm",
+        "email": "sdfghjk",
+        "phone": "sdfghjk",
+        "github": "xcvbn",
+        "linkedIn": "dfghj",
+        "portfolio": "ghjkl"
+      },
+      "educationDetails": {
+        "course": "srty",
+        "college": "h",
+        "university": "wertj",
+        "year": "wgh"
+      },
+      "experience": {
+        "job": "edrh",
+        "company": "wefg",
+        "jobLocation": "erfg",
+        "duration": "we"
+      },
+      "skills": [
+        "REACT",
+        "ANGULAR",
+        "JAVASCRIPT"
+      ],
+      "summary": "eerr",
+      "id": 25
+    },
+    {
+      "personalDetails": {
+        "name": "ghj",
+        "jobTitle": "bnm",
+        "location": ",bnm",
+        "email": "",
+        "phone": "",
+        "github": "",
+        "linkedIn": "",
+        "portfolio": ""
+      },
+      "educationDetails": {
+        "course": "",
+        "college": "",
+        "university": "",
+        "year": ""
+      },
+      "experience": {
+        "job": "",
+        "company": "",
+        "jobLocation": "",
+        "duration": ""
+      },
+      "skills": [],
+      "summary": "",
+      "id": 26
     }
   ],
   "history": [
