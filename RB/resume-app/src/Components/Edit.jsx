@@ -5,8 +5,12 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-function Edit({resumeId}) {
-  console.log(resumeId);
+import { getAResumeAPI } from '../services/allAPI';
+import {useEffect,useState} from 'react';
+function Edit({resumeId, setUpdateResume}) {
+  // console.log(resumeId);
+  const [userInput, setUserInput] = useState({})
+  const[userSkill,setUserSkill] = useState("") // to add skill 
   
   const style = {
     position: 'absolute',
@@ -27,6 +31,41 @@ function Edit({resumeId}) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  //getEditResumeDetails
+
+  const getEditResumeDetails = async() => {
+    try{
+      const result = await getAResumeAPI(resumeId);
+      // console.log(result);
+      setUserInput(result.data)
+    }
+    catch(err){
+      console.log(err);
+      
+    }
+  }
+
+  useEffect(() => {
+    getEditResumeDetails()
+  },[])
+  
+  // addSkill
+  const addSkill = (userSkill) => {
+    if (userSkill) {
+      if (userInput.skills.includes(userSkill)) {
+        alert("Skill already exists")
+      }
+      else {
+        setUserInput({ ...userInput, skills: [...userInput.skills, userSkill] })
+      }
+    }
+  }
+
+  // removeSkill
+  const removeSkill = (skill) => {
+    setUserInput({ ...userInput, skills: userInput.skills.filter(item => item != skill) })
+  }
+
   return (
     <div>
       <button onClick={handleOpen} className='btn text-primary fs-2'><FaEdit /></button>
@@ -44,51 +83,51 @@ function Edit({resumeId}) {
             <div>
               <h3>Personal Details</h3>
               <div className='d-flex row p-3'>
-                <TextField id="standard-basic" label="Full Name" variant="standard" />
-                <TextField id="standard-basic" label="Job Title" variant="standard" />
-                <TextField id="standard-basic" label="Location" variant="standard" />
+                <TextField id="standard-basic" label="Full Name" variant="standard" value={userInput?.personalDetails?.name}/>
+                <TextField id="standard-basic" label="Job Title" variant="standard" value={userInput?.personalDetails?.jobTitle}/>
+                <TextField id="standard-basic" label="Location" variant="standard" value={userInput?.personalDetails?.location}/>
               </div>
             </div>
             <div>
               <h3>Contact Details</h3>
               <div className='d-flex row p-3'>
-                <TextField id="standard-basic" label="Email" variant="standard" />
-                <TextField id="standard-basic" label="Phone Number" variant="standard" />
-                <TextField id="standard-basic" label="Github Profile Link" variant="standard" />
-                <TextField id="standard-basic" label="LinkedIn Profile Link" variant="standard" />
-                <TextField id="standard-basic" label="Portfolio Link" variant="standard" />
+                <TextField id="standard-basic" label="Email" variant="standard" value={userInput?.personalDetails?.email}/>
+                <TextField id="standard-basic" label="Phone Number" variant="standard" value={userInput?.personalDetails?.phone}/>
+                <TextField id="standard-basic" label="Github Profile Link" variant="standard" value={userInput?.personalDetails?.github}/>
+                <TextField id="standard-basic" label="LinkedIn Profile Link" variant="standard" value={userInput?.personalDetails?.linkedIn}/>
+                <TextField id="standard-basic" label="Portfolio Link" variant="standard" value={userInput?.personalDetails?.portfolio}/>
               </div>
             </div>
             <div>
               <h3>Education Details</h3>
               <div className='d-flex row p-3'>
-                <TextField id="standard-basic" label="Course Name" variant="standard" />
-                <TextField id="standard-basic" label="College Name" variant="standard" />
-                <TextField id="standard-basic" label="University" variant="standard" />
-                <TextField id="standard-basic" label="Year of Passout" variant="standard" />
+                <TextField id="standard-basic" label="Course Name" variant="standard" value={userInput?.educationDetails?.course}/>
+                <TextField id="standard-basic" label="College Name" variant="standard" value={userInput?.educationDetails?.college}/>
+                <TextField id="standard-basic" label="University" variant="standard" value={userInput?.educationDetails?.university}/>
+                <TextField id="standard-basic" label="Year of Passout" variant="standard" value={userInput?.educationDetails?.year}/>
               </div>
             </div>
             <div>
               <h3>Professional Details</h3>
               <div className='d-flex row p-3'>
-                <TextField id="standard-basic" label="Job or Internship" variant="standard" />
-                <TextField id="standard-basic" label="Company Name" variant="standard" />
-                <TextField id="standard-basic" label="Location" variant="standard" />
-                <TextField id="standard-basic" label="Duration" variant="standard" />
+                <TextField id="standard-basic" label="Job or Internship" variant="standard" value={userInput?.experience?.job}/>
+                <TextField id="standard-basic" label="Company Name" variant="standard" value={userInput?.experience?.company}/>
+                <TextField id="standard-basic" label="Location" variant="standard" value={userInput?.experience?.jobLocation}/>
+                <TextField id="standard-basic" label="Duration" variant="standard" value={userInput?.experience?.duration}/>
               </div>
             </div>
             {/* skills */}
             <h3>Skills</h3>
             <div className='d-flex justify-content-between align-items-center m-3'>
-              <input type="text" className='form-control' placeholder='Add skills' />
-              <Button className='me-3' variant="text" sx={{ maxWidth: '40px' }}>Add</Button>
+              <input type="text" className='form-control' placeholder='Add skills' onChange={e => setUserSkill(e.target.value)} value={userSkill}/>
+              <Button onClick={() => addSkill(userSkill)} className='me-3' variant="text" sx={{ maxWidth: '40px' }}>Add</Button>
             </div>
             {/* added skills */}
             <h5>Added skills : </h5>
             <div className='d-flex justify-content-between'>
-              <span className='btn btn-primary d-flex align-items-center justify-content-center'>
-                Skill<button className='btn text-light'>X</button>
-              </span>
+              {userInput?.skills?.map(skill => (<span className='btn btn-primary d-flex align-items-center justify-content-center'>
+                {skill}<button onClick={() => removeSkill(skill)} className='btn text-light'>X</button>
+              </span>))}
             </div>
             <div>
               <h3>Professional Summary</h3>
@@ -99,7 +138,7 @@ function Edit({resumeId}) {
                   multiline
                   rows={4}
                   variant="standard"
-                />
+                  value={userInput?.summary}/>
               </div>
             </div>
           </Typography>

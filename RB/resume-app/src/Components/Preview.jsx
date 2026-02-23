@@ -54,7 +54,7 @@ function Preview({userInput, finish, resumeId, setUserInput}) {
           {/* download */}
           <button onClick={downloadCV} className='btn fs-3 text-primary'><FaFileDownload/></button>
           {/* edit */}
-          <div><Edit resumeId={resumeId}/></div>
+          <div><Edit resumeId={resumeId} setUpdateResume={setUserInput}/></div>
           {/* history */ }
           {downloadStatus && <Link to= {'/history'} className='btn fs-3 text-primary'><FaHistory /></Link>}
           {/* back */ }

@@ -780,6 +780,120 @@
       "skills": [],
       "summary": "",
       "id": 26
+    },
+    {
+      "personalDetails": {
+        "name": "asdfgh",
+        "jobTitle": "sdfg",
+        "location": "fghj",
+        "email": "",
+        "phone": "",
+        "github": "",
+        "linkedIn": "",
+        "portfolio": ""
+      },
+      "educationDetails": {
+        "course": "",
+        "college": "",
+        "university": "",
+        "year": ""
+      },
+      "experience": {
+        "job": "",
+        "company": "",
+        "jobLocation": "",
+        "duration": ""
+      },
+      "skills": [],
+      "summary": "",
+      "id": 27
+    },
+    {
+      "personalDetails": {
+        "name": "sdfgh",
+        "jobTitle": "vbn",
+        "location": "bnm",
+        "email": "",
+        "phone": "",
+        "github": "",
+        "linkedIn": "",
+        "portfolio": ""
+      },
+      "educationDetails": {
+        "course": "",
+        "college": "",
+        "university": "",
+        "year": ""
+      },
+      "experience": {
+        "job": "",
+        "company": "",
+        "jobLocation": "",
+        "duration": ""
+      },
+      "skills": [
+        "MONGODB"
+      ],
+      "summary": "",
+      "id": 28
+    },
+    {
+      "personalDetails": {
+        "name": "cvb",
+        "jobTitle": "vbn",
+        "location": "bnm",
+        "email": "",
+        "phone": "",
+        "github": "",
+        "linkedIn": "",
+        "portfolio": ""
+      },
+      "educationDetails": {
+        "course": "",
+        "college": "",
+        "university": "",
+        "year": ""
+      },
+      "experience": {
+        "job": "",
+        "company": "",
+        "jobLocation": "",
+        "duration": ""
+      },
+      "skills": [],
+      "summary": "",
+      "id": 29
+    },
+    {
+      "personalDetails": {
+        "name": "dfgh",
+        "jobTitle": "fghj",
+        "location": "hjk",
+        "email": "vbnm",
+        "phone": "ghnjm",
+        "github": "bnm,",
+        "linkedIn": "vbnm",
+        "portfolio": "bnm"
+      },
+      "educationDetails": {
+        "course": "vbnm",
+        "college": "vbnm",
+        "university": "bnm,",
+        "year": "nm,"
+      },
+      "experience": {
+        "job": "vbnm",
+        "company": "bnm",
+        "jobLocation": "bnm,",
+        "duration": "hjk"
+      },
+      "skills": [
+        "JAVASCRIPT",
+        "REACT",
+        "ANGULAR"
+      ],
+      "summary": "cvbnm",
+      "id": 30
     }
   ],
   "history": [

@@ -25,3 +25,8 @@ export const getDownloadHistoryAPI = async() => {
 export const deleteDownloadHistoryAPI = async(id) => {
     return await commonAPI('DELETE',`${server_url}/history/${id}`,{});
 }
+
+// getAResumeAPI
+export const getAResumeAPI = async(id) => {
+    return await commonAPI('GET',`${server_url}/resumes/${id}`,{});
+}
