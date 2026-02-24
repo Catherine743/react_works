@@ -8,7 +8,6 @@ function Header() {
       <div>
         <Link to="/" className="text-white me-3">Home</Link>
         <Link to="/add" className="text-white me-3">Add Pet</Link>
-        <Link to="/history" className="text-white">History</Link>
       </div>
     </div>
   );

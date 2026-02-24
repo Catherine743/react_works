@@ -1,13 +1,3 @@
 {
-  "pets": [
-    {
-      "name": "toffee",
-      "breed": "shihzu",
-      "age": "1",
-      "medicalHistory": "good",
-      "vaccinationDate": "2026-01-13",
-      "id": 1
-    }
-  ],
-  "history": []
+  "pets": []
 }
