@@ -1,3 +1,21 @@
 {
-  "pets": []
+  "pets": [
+    {
+      "name": "toffee",
+      "breed": "shihzu",
+      "age": "1",
+      "medicalHistory": "good",
+      "vaccinationDate": "2026-01-16",
+      "id": 1
+    },
+    {
+      "name": "ceaser",
+      "breed": "french bulldog",
+      "age": "5",
+      "medicalHistory": "tough",
+      "vaccinationDate": "2021-01-24",
+      "id": 2
+    }
+  ],
+  "history": []
 }
