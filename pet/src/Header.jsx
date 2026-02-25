@@ -16,10 +16,13 @@ function Header() {
             Home
           </Link>
         )}
-
+        
+        {location.pathname !== "/add" && (
         <Link to="/add" className="text-white me-3">
           Add Pet
         </Link>
+        )}
+        
       </div>
     </div>
   );
