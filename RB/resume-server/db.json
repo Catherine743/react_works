@@ -894,6 +894,36 @@
       ],
       "summary": "cvbnm",
       "id": 30
+    },
+    {
+      "personalDetails": {
+        "name": "John  David",
+        "jobTitle": "Developer",
+        "location": "Bengaluru",
+        "email": "johndavid@gmail.com",
+        "phone": "9898989898",
+        "github": "github.com/John743",
+        "linkedIn": "linkedin.com/in/john-David",
+        "portfolio": "vercel.com/john743s-portfolio"
+      },
+      "educationDetails": {
+        "course": "B.Tech",
+        "college": "ABC College",
+        "university": "Bengaluru University",
+        "year": "2020"
+      },
+      "experience": {
+        "job": "JavaScript Developer",
+        "company": "TCS",
+        "jobLocation": "Bengaluru",
+        "duration": "2 years"
+      },
+      "skills": [
+        "REACT",
+        "JAVASCRIPT"
+      ],
+      "summary": "xdhgdvbkjfn3l4j;",
+      "id": 31
     }
   ],
   "history": [
