@@ -21,16 +21,3 @@ export const deletePetAPI = async (id) => {
 export const getSinglePetAPI = async (id) => {
     return await commonAPI("GET", `${server_url}/pets/${id}`, {});
 };
-
-// HISTORY APIs
-export const getHistoryAPI = async () => {
-    return await commonAPI("GET", `${server_url}/history`, {});
-};
-
-export const deleteHistoryAPI = async (id) => {
-    return await commonAPI("DELETE", `${server_url}/history/${id}`, {});
-};
-
-export const addHistoryAPI = async (data) => {
-    return await commonAPI("POST", `${server_url}/history`, data);
-};
