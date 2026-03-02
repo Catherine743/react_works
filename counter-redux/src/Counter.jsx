@@ -1,13 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { increment } from './Redux/slice/counterSlice'
+import { decrement, handleByIncrement, increment, reset } from './Redux/slice/counterSlice'
 
 function Counter() {
 
     const count = useSelector((state) => state.counterReducer.count)
     const dispatch = useDispatch()
-
+    
+    const[amount, setAmount] = useState("")
+    console.log(amount);
+    
+    const incrementByAmount = () => {
+        if(amount == ""){
+            alert("please fill missing field")
+        }
+        else{
+            dispatch(handleByIncrement(Number(amount)))
+            setAmount("")
+        }
+    }
     return (
         <div>
             <div>
@@ -16,12 +28,12 @@ function Counter() {
                     <h2 className='text-center mt-5'>{ count }</h2>
                     <div className='d-flex justify-content-around mt-5'>
                         <Button variant="primary" onClick={() => dispatch(increment())}>Increment</Button>
-                        <Button variant="secondary" >Reset</Button>
-                        <Button variant="success" >Decrement</Button>
+                        <Button variant="secondary" onClick={() => dispatch(reset())}>Reset</Button>
+                        <Button variant="success" onClick={() => dispatch(decrement())}>Decrement</Button>
                     </div>
                     <div className='d-flex mt-5 p-3'>
-                        <input type="text" className='form-control' placeholder='Enter amount' />
-                        <Button className='btn btn-primary m-2'>Increment By Amount</Button>
+                        <input type="text" className='form-control' placeholder='Enter amount' onChange={e => setAmount(e.target.value)} value={amount || ""}/>
+                        <Button className='btn btn-primary m-2' onClick={incrementByAmount}> Increment By Amount</Button>
                     </div>
                 </div>
             </div>
