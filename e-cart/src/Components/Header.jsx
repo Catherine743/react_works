@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import { Badge, Container, Form, Navbar, Nav } from 'react-bootstrap';
 
-function Header() {
+function Header({insideHome}) {
   return (
     <div>
       <Navbar expand="lg" className="bg-primary fixed-top">
@@ -13,11 +13,11 @@ function Header() {
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Form.Control
+          { insideHome && <Form.Control
             type="search"
             placeholder="Search"
             className="ms-5 w-25"
-          />
+          />}
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
               <Nav.Link className='btn btn-outline-light'>
