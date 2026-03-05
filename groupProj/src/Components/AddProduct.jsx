@@ -1,9 +1,12 @@
 import { useDispatch } from "react-redux";
 import { addProduct } from "../redux/slice/stockSlice";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function AddProduct() {
+function AddProduct() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
@@ -14,26 +17,45 @@ export default function AddProduct() {
       return;
     }
 
-    dispatch(addProduct({
-      id: Date.now(),
-      name,
-      price: Number(price),
-      stock: Number(stock),
-      lowStockThreshold: 5
-    }));
+    dispatch(
+      addProduct({
+        id: Date.now(),
+        name,
+        price: Number(price),
+        stock: Number(stock),
+      })
+    );
 
-    setName("");
-    setPrice("");
-    setStock("");
+    navigate("/"); // Redirect after success
   };
 
   return (
     <div className="card">
       <h3>Add Product</h3>
-      <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
-      <input placeholder="Price" value={price} onChange={e => setPrice(e.target.value)} />
-      <input placeholder="Stock" value={stock} onChange={e => setStock(e.target.value)} />
-      <button onClick={handleSubmit}>Add</button>
+
+      <input
+        placeholder="Product Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+
+      <input
+        type="number"
+        placeholder="Price"
+        value={price}
+        onChange={(e) => setPrice(e.target.value)}
+      />
+
+      <input
+        type="number"
+        placeholder="Stock"
+        value={stock}
+        onChange={(e) => setStock(e.target.value)}
+      />
+
+      <button onClick={handleSubmit}>Add Product</button>
     </div>
   );
 }
+
+export default AddProduct;

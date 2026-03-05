@@ -1,80 +1,153 @@
 import { useSelector } from "react-redux";
-import { BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
+import { useState, useMemo } from "react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  PieChart,
+  Pie,
+  Cell,
+  Legend
+} from "recharts";
 
 export default function Dashboard() {
   const { products, sales } = useSelector(state => state.stockReducer);
+  const [sortType, setSortType] = useState("top5");
 
-  const totalProducts = products.length;
+  // 📊 Total Revenue
+  const totalRevenue = useMemo(() => {
+    return sales.reduce((acc, sale) => acc + sale.totalAmount, 0);
+  }, [sales]);
 
-  const totalRevenue = sales.reduce(
-    (acc, sale) => acc + sale.totalAmount,
-    0
-  );
-
-  // 📈 Monthly Revenue (current month only)
+  // 📈 Monthly Revenue
   const currentMonth = new Date().getMonth();
-  const monthlyRevenue = sales
-    .filter(sale => new Date(sale.date).getMonth() === currentMonth)
-    .reduce((acc, sale) => acc + sale.totalAmount, 0);
+  const monthlyRevenue = useMemo(() => {
+    return sales
+      .filter(sale => new Date(sale.date).getMonth() === currentMonth)
+      .reduce((acc, sale) => acc + sale.totalAmount, 0);
+  }, [sales]);
 
-  // 📊 Sales count per product
-  const salesCount = {};
+  // 📊 Sales Aggregation (Quantity + Revenue per product)
+  const salesData = useMemo(() => {
+    const data = {};
 
-  sales.forEach(sale => {
-    salesCount[sale.productId] =
-      (salesCount[sale.productId] || 0) + sale.quantity;
-  });
+    sales.forEach(sale => {
+      if (!data[sale.productId]) {
+        data[sale.productId] = {
+          quantity: 0,
+          revenue: 0
+        };
+      }
 
-  // Convert to array with product names
-  const salesData = Object.keys(salesCount).map(id => {
-    const product = products.find(p => p.id === Number(id));
-    return {
-      name: product?.name || "Unknown",
-      quantity: salesCount[id]
-    };
-  });
+      data[sale.productId].quantity += sale.quantity;
+      data[sale.productId].revenue += sale.totalAmount;
+    });
 
-  // 📉 Most Sold Product
-  const mostSold = salesData.sort((a, b) => b.quantity - a.quantity)[0];
+    return Object.keys(data).map(id => {
+      const product = products.find(p => p.id === Number(id));
+      return {
+        name: product?.name || "Unknown",
+        quantity: data[id].quantity,
+        revenue: data[id].revenue
+      };
+    });
+  }, [sales, products]);
+
+  // 🔥 Sorting Logic
+  const sortedData = useMemo(() => {
+    let sorted = [...salesData];
+
+    if (sortType === "top5") {
+      return sorted.sort((a, b) => b.quantity - a.quantity).slice(0, 5);
+    }
+
+    if (sortType === "bottom5") {
+      return sorted.sort((a, b) => a.quantity - b.quantity).slice(0, 5);
+    }
+
+    if (sortType === "revenue") {
+      return sorted.sort((a, b) => b.revenue - a.revenue).slice(0, 5);
+    }
+
+    return sorted;
+  }, [salesData, sortType]);
+
+  // 📈 Most Sold Product
+  const mostSold =
+    salesData.length > 0
+      ? [...salesData].sort((a, b) => b.quantity - a.quantity)[0]
+      : null;
 
   // 📦 Least Sold Product
-  const leastSold = salesData.length > 0
-    ? salesData[salesData.length - 1]
-    : null;
+  const leastSold =
+    salesData.length > 0
+      ? [...salesData].sort((a, b) => a.quantity - b.quantity)[0]
+      : null;
 
-  // 💰 Profit Estimation (Assume 20%)
+  // 💰 Profit (20%)
   const profit = totalRevenue * 0.2;
 
-  // 🏆 Top 5 Products
-  const top5 = [...salesData]
-    .sort((a, b) => b.quantity - a.quantity)
-    .slice(0, 5);
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#AA336A"];
 
   return (
     <div className="dashboard-card">
-      <h2>Dashboard Analytics</h2>
+      <h2>📊 Smart Analytics Dashboard</h2>
 
-      <p>Total Products: {totalProducts}</p>
+      <p>Total Products: {products.length}</p>
       <p>Total Revenue: ₹{totalRevenue}</p>
       <p>Monthly Revenue: ₹{monthlyRevenue}</p>
       <p>Estimated Profit (20%): ₹{profit.toFixed(2)}</p>
 
       {mostSold && (
-        <p>📈 Most Sold Product: {mostSold.name} ({mostSold.quantity} sold)</p>
+        <p>📈 Most Sold: {mostSold.name} ({mostSold.quantity} sold)</p>
       )}
 
       {leastSold && (
-        <p>📦 Least Sold Product: {leastSold.name} ({leastSold.quantity} sold)</p>
+        <p>📦 Least Sold: {leastSold.name} ({leastSold.quantity} sold)</p>
       )}
 
-      <h3>🏆 Top 5 Products</h3>
+      <hr />
 
-      <BarChart width={500} height={300} data={top5}>
+      <h3>🔎 Sort Products</h3>
+
+      <select onChange={(e) => setSortType(e.target.value)}>
+        <option value="top5">Top 5 by Quantity</option>
+        <option value="bottom5">Bottom 5 by Quantity</option>
+        <option value="revenue">Top 5 by Revenue</option>
+      </select>
+
+      <hr />
+
+      <h3>📊 Sales Chart</h3>
+
+      <BarChart width={500} height={300} data={sortedData}>
         <XAxis dataKey="name" />
         <YAxis />
         <Tooltip />
         <Bar dataKey="quantity" />
       </BarChart>
+
+      <hr />
+
+      <h3>🥧 Revenue Distribution</h3>
+
+      <PieChart width={500} height={350}>
+        <Pie
+          data={sortedData}
+          dataKey="revenue"
+          nameKey="name"
+          outerRadius={120}
+          label
+        >
+          {sortedData.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          ))}
+        </Pie>
+        <Legend />
+        <Tooltip />
+      </PieChart>
     </div>
   );
 }
