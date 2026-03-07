@@ -55,7 +55,27 @@ const stockSlice = createSlice({
         });
       }
     },
-  },
+    addSale: (state, action) => {
+
+      const { productId, quantity, totalAmount, date } = action.payload;
+
+      const product = state.products.find(
+        (p) => p.id === productId
+      );
+
+      if (product) {
+        product.stock -= quantity;
+        product.sold += quantity;
+      }
+
+      state.sales.push({
+        productId,
+        quantity,
+        totalAmount,
+        date
+      });
+    }
+  }
 });
 
 export const {

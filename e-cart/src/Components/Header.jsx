@@ -1,8 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { Badge, Container, Form, Navbar, Nav } from 'react-bootstrap';
-
+import { searchProduct } from '../Redux/slice/productSlice';
+import { useDispatch } from 'react-redux';
 function Header({insideHome}) {
+
+  const dispatch = useDispatch();
   return (
     <div>
       <Navbar expand="lg" className="bg-primary fixed-top">
@@ -17,6 +20,7 @@ function Header({insideHome}) {
             type="search"
             placeholder="Search"
             className="ms-5 w-25"
+            onChange={e => dispatch(searchProduct(e.target.value.toLowerCase()))}
           />}
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">

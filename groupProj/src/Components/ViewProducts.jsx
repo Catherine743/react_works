@@ -1,17 +1,31 @@
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 function ViewProducts() {
+    const [minPrice, setMinPrice] = useState("");
+    const [maxPrice, setMaxPrice] = useState("");
+
     const { products, threshold } = useSelector(
         (state) => state.stockReducer
     );
     const navigate = useNavigate();
     const [filter, setFilter] = useState("");
 
-    const filteredProducts = products.filter((product) =>
-        product.name.toLowerCase().includes(filter.toLowerCase())
-    );
+    const filteredProducts = products.filter((product) => {
+
+        const matchName = product.name
+            .toLowerCase()
+            .includes(filter.toLowerCase());
+
+        const matchMin =
+            minPrice === "" || product.price >= Number(minPrice);
+
+        const matchMax =
+            maxPrice === "" || product.price <= Number(maxPrice);
+
+        return matchName && matchMin && matchMax;
+    });
 
     return (
         <div className="container mt-4">
@@ -22,10 +36,23 @@ function ViewProducts() {
                 onChange={(e) => setFilter(e.target.value)}
             />
 
-            <Link to="/add">Add Product</Link>
-            <Link to="/dashboard" className="ms-3">
-                View Dashboard
-            </Link>
+            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+
+                <input
+                    type="number"
+                    placeholder="Min Price"
+                    value={minPrice}
+                    onChange={(e) => setMinPrice(e.target.value)}
+                />
+
+                <input
+                    type="number"
+                    placeholder="Max Price"
+                    value={maxPrice}
+                    onChange={(e) => setMaxPrice(e.target.value)}
+                />
+
+            </div>
 
             <table className="table mt-3">
                 <thead>
@@ -41,7 +68,9 @@ function ViewProducts() {
                     {filteredProducts.map((product) => (
                         <tr key={product.id}>
                             <td>{product.name}</td>
-                            <td>{product.price}</td>
+                            <td>
+                                ₹{product.minPrice} - ₹{product.maxPrice}
+                            </td>
                             <td>
                                 {product.stock}
                                 {product.stock <= threshold && (

@@ -4,40 +4,53 @@ import { updateProduct } from "../redux/slice/stockSlice";
 import { useState } from "react";
 
 function EditProduct() {
+
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const product = useSelector((state) =>
-  state.stockReducer.products.find(
-    (item) => item.id === Number(id)
-  )
-);
+    state.stockReducer.products.find(
+      (item) => item.id === Number(id)
+    )
+  );
 
-  const [name, setName] = useState(product.name);
-  const [price, setPrice] = useState(product.price);
   const [stock, setStock] = useState(product.stock);
 
   const handleUpdate = () => {
+
     dispatch(
       updateProduct({
-        id: Number(id),
-        name,
-        price: Number(price),
-        stock: Number(stock),
-        sold: product.sold,
+        id: product.id,
+        stock: Number(stock)
       })
     );
+
+    alert("✅ Stock Updated Successfully");
+
     navigate("/");
   };
 
   return (
-    <div className="container mt-4">
+    <div className="card">
+
       <h2>Edit Product</h2>
-      <input value={name} onChange={(e) => setName(e.target.value)} />
-      <input value={price} onChange={(e) => setPrice(e.target.value)} />
-      <input value={stock} onChange={(e) => setStock(e.target.value)} />
-      <button onClick={handleUpdate}>Update</button>
+
+      <label>Product Name</label>
+      <input value={product.name} disabled />
+
+      <label>Price</label>
+      <input value={product.price}/>
+
+      <label>Update Stock</label>
+      <input
+        type="number"
+        value={stock}
+        onChange={(e)=>setStock(e.target.value)}
+      />
+
+      <button onClick={handleUpdate}>Update Stock</button>
+
     </div>
   );
 }
