@@ -1,11 +1,18 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { Badge, Container, Form, Navbar, Nav } from 'react-bootstrap';
 import { searchProduct } from '../Redux/slice/productSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 function Header({insideHome}) {
 
   const dispatch = useDispatch();
+  const {wishlist} = useSelector(state => state.wishlistReducer);
+  const [wishListCount, setWishListCount] = useState(0);
+
+  useEffect(() => {
+    setWishListCount(wishlist.length)
+  },[wishlist])
+
   return (
     <div>
       <Navbar expand="lg" className="bg-primary fixed-top">
@@ -27,7 +34,7 @@ function Header({insideHome}) {
               <Nav.Link className='btn btn-outline-light'>
                 <Link to={'/wishlist'} style={{ color: "black", fontWeight: "bold", textDecoration: "none" }}>
                   <i className='fa-solid fa-heart text-danger'></i>Wishlist
-                  <Badge bg="success rounded ms-2">0</Badge>
+                  <Badge bg="success rounded ms-2">{wishListCount}</Badge>
                 </Link>
               </Nav.Link>
               <Nav.Link className='btn btn-outline-light ms-2'>

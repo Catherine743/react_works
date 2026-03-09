@@ -1,87 +1,74 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const storedProducts = JSON.parse(localStorage.getItem("products")) || [];
+const storedSales = JSON.parse(localStorage.getItem("sales")) || [];
+
 const initialState = {
-  products: [],
-  sales: [],
-  threshold: 5, // 🔥 Added threshold
+  products: storedProducts,
+  sales: storedSales,
+  threshold: 5,
+};
+
+// Helper to persist products and sales
+const persist = (products, sales) => {
+  localStorage.setItem("products", JSON.stringify(products));
+  if (sales) localStorage.setItem("sales", JSON.stringify(sales));
 };
 
 const stockSlice = createSlice({
   name: "stock",
   initialState,
   reducers: {
-    // ✅ Add Product
     addProduct: (state, action) => {
-      state.products.push({
-        ...action.payload,
-        sold: 0, // track sold quantity
-      });
+      state.products.push({ ...action.payload, sold: 0 });
+      persist(state.products);
     },
 
-    // ✅ Update Product (Needed for Edit Page)
     updateProduct: (state, action) => {
-      const index = state.products.findIndex(
-        (p) => p.id === action.payload.id
-      );
-
-      if (index !== -1) {
-        state.products[index] = {
-          ...state.products[index],
-          ...action.payload,
-        };
-      }
+      const index = state.products.findIndex(p => p.id === action.payload.id);
+      if (index === -1) return;
+      state.products[index] = { ...state.products[index], ...action.payload };
+      persist(state.products);
     },
 
-    // ✅ Add Sale
     addSale: (state, action) => {
       const { productId, quantity } = action.payload;
+      const product = state.products.find(p => p.id === productId);
+      if (!product || product.stock < quantity) return;
 
-      const product = state.products.find(
-        (p) => p.id === productId
-      );
+      product.stock -= quantity;
+      product.sold += quantity;
 
-      if (product && product.stock >= quantity) {
-        product.stock -= quantity;
-        product.sold += quantity; // 🔥 important for dashboard
-
-        const totalAmount = quantity * product.price;
-
-        state.sales.push({
-          id: Date.now(),
-          productId,
-          quantity,
-          totalAmount,
-          date: new Date().toISOString(),
-        });
-      }
-    },
-    addSale: (state, action) => {
-
-      const { productId, quantity, totalAmount, date } = action.payload;
-
-      const product = state.products.find(
-        (p) => p.id === productId
-      );
-
-      if (product) {
-        product.stock -= quantity;
-        product.sold += quantity;
-      }
+      const avgPrice = (product.minPrice + product.maxPrice) / 2;
+      const totalAmount = quantity * avgPrice;
 
       state.sales.push({
+        id: Date.now(),
         productId,
         quantity,
         totalAmount,
-        date
+        date: new Date().toISOString(),
       });
-    }
-  }
+
+      persist(state.products, state.sales);
+    },
+
+    deleteProduct: (state, action) => {
+      const id = action.payload;
+
+      state.products = state.products.filter(p => p.id !== id);
+
+      // remove sales related to that product
+      state.sales = state.sales.filter(s => s.productId !== id);
+
+      persist(state.products, state.sales);
+    },
+
+    clearProducts: (state) => {
+      state.products = [];
+    },
+  },
 });
 
-export const {
-  addProduct,
-  addSale,
-  updateProduct,
-} = stockSlice.actions;
-
+export const { addProduct, updateProduct, addSale, deleteProduct, clearProducts } = stockSlice.actions;
 export default stockSlice.reducer;

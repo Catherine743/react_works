@@ -4,53 +4,81 @@ import { updateProduct } from "../redux/slice/stockSlice";
 import { useState } from "react";
 
 function EditProduct() {
-
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const product = useSelector((state) =>
-    state.stockReducer.products.find(
-      (item) => item.id === Number(id)
-    )
+  const product = useSelector(state =>
+    state.stockReducer.products.find(item => item.id === Number(id))
   );
 
-  const [stock, setStock] = useState(product.stock);
+  // Early return if product not found
+  if (!product) return <p>Product not found</p>;
+
+  // Initialize state after ensuring product exists
+  const [form, setForm] = useState({
+    name: product.name,
+    minPrice: product.minPrice,
+    maxPrice: product.maxPrice,
+    stock: product.stock,
+  });
+
+  // Generic handler for input changes
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setForm(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleUpdate = () => {
-
-    dispatch(
-      updateProduct({
-        id: product.id,
-        stock: Number(stock)
-      })
-    );
-
-    alert("✅ Stock Updated Successfully");
-
-    navigate("/");
+    dispatch(updateProduct({
+      id: product.id,
+      name: form.name,
+      minPrice: Number(form.minPrice),
+      maxPrice: Number(form.maxPrice),
+      stock: Number(form.stock),
+    }));
+    navigate("/products");
   };
 
   return (
     <div className="card">
-
       <h2>Edit Product</h2>
 
       <label>Product Name</label>
-      <input value={product.name} disabled />
-
-      <label>Price</label>
-      <input value={product.price}/>
-
-      <label>Update Stock</label>
       <input
-        type="number"
-        value={stock}
-        onChange={(e)=>setStock(e.target.value)}
+        name="name"
+        value={form.name}
+        onChange={handleChange}
       />
 
-      <button onClick={handleUpdate}>Update Stock</button>
+      <label>Min Price</label>
+      <input
+        type="number"
+        name="minPrice"
+        value={form.minPrice}
+        onChange={handleChange}
+      />
 
+      <label>Max Price</label>
+      <input
+        type="number"
+        name="maxPrice"
+        value={form.maxPrice}
+        onChange={handleChange}
+      />
+
+      <label>Stock</label>
+      <input
+        type="number"
+        name="stock"
+        value={form.stock}
+        onChange={handleChange}
+      />
+
+      <button onClick={handleUpdate}>Update Product</button>
     </div>
   );
 }

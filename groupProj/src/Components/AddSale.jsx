@@ -1,75 +1,94 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useState, useMemo } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { addSale } from "../redux/slice/stockSlice";
-import { useState } from "react";
 
 export default function AddSale() {
   const dispatch = useDispatch();
   const products = useSelector(state => state.stockReducer.products);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const [productId, setProductId] = useState("");
+  const passedProductId = location.state?.productId || "";
+  const [productId, setProductId] = useState(passedProductId);
   const [quantity, setQuantity] = useState("");
+  const [price, setPrice] = useState("");
   const [message, setMessage] = useState("");
 
-  const selectedProduct = products.find(
-    p => p.id === Number(productId)
+  const selectedProduct = useMemo(
+    () => products.find(p => p.id === Number(productId)),
+    [productId, products]
   );
 
-  const totalAmount =
-    selectedProduct && quantity
-      ? selectedProduct.price * Number(quantity)
-      : 0;
+  const totalAmount = useMemo(
+    () => (price && quantity ? Number(price) * Number(quantity) : 0),
+    [price, quantity]
+  );
 
   const handleSale = () => {
-    if (!productId || !quantity) {
-      setMessage("⚠ Please select product and enter quantity");
+    if (!productId || !quantity || !price) {
+      setMessage("⚠ Please fill all fields");
       return;
     }
-
-    if (Number(quantity) > selectedProduct.stock) {
+    if (!selectedProduct) {
+      setMessage("❌ Product not found");
+      return;
+    }
+    const qty = Number(quantity);
+    const prc = Number(price);
+    if (qty > selectedProduct.stock) {
       setMessage("❌ Not enough stock available");
+      return;
+    }
+    if (prc < selectedProduct.minPrice || prc > selectedProduct.maxPrice) {
+      setMessage("❌ Price must be within product's price range");
       return;
     }
 
     dispatch(
       addSale({
-        productId: Number(productId),
-        quantity: Number(quantity),
-        totalAmount: totalAmount,
-        date: new Date().toISOString()
+        productId: selectedProduct.id,
+        quantity: qty,
+        totalAmount,
+        date: new Date().toISOString(),
       })
     );
 
     setMessage("✅ Sale recorded successfully!");
-    setQuantity("");
-    setProductId("");
+    navigate("/products");
   };
 
   return (
     <div className="card">
       <h3>🛒 Record Sale</h3>
 
-      <select
-        value={productId}
-        onChange={e => {
-          setProductId(e.target.value);
-          setMessage("");
-        }}
-      >
-        <option value="">Select Product</option>
-        {products.map(p => (
-          <option key={p.id} value={p.id}>
-            {p.name}
-          </option>
-        ))}
-      </select>
+      {passedProductId ? (
+        <p>Product: <strong>{selectedProduct?.name || "Unknown"}</strong></p>
+      ) : (
+        <select
+          value={productId}
+          onChange={e => { setProductId(e.target.value); setMessage(""); }}
+        >
+          <option value="">Select Product</option>
+          {products.map(p => (
+            <option key={p.id} value={p.id}>{p.name}</option>
+          ))}
+        </select>
+      )}
 
       {selectedProduct && (
         <p>
           Available Stock: {selectedProduct.stock} <br />
-          Price: ₹{selectedProduct.price}
+          Price Range: ₹{selectedProduct.minPrice} - ₹{selectedProduct.maxPrice}
         </p>
       )}
 
+      <input
+        type="number"
+        placeholder="Selling Price"
+        value={price}
+        onChange={e => setPrice(e.target.value)}
+      />
       <input
         type="number"
         placeholder="Quantity"
@@ -77,12 +96,9 @@ export default function AddSale() {
         onChange={e => setQuantity(e.target.value)}
       />
 
-      {quantity && selectedProduct && (
-        <p>Total Amount: ₹{totalAmount}</p>
-      )}
+      {price && quantity && <p>Total Amount: ₹{totalAmount}</p>}
 
       <button onClick={handleSale}>Sell</button>
-
       {message && <p>{message}</p>}
     </div>
   );
