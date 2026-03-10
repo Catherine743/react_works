@@ -3,15 +3,19 @@ import { Link } from 'react-router-dom';
 import { Badge, Container, Form, Navbar, Nav } from 'react-bootstrap';
 import { searchProduct } from '../Redux/slice/productSlice';
 import { useDispatch, useSelector } from 'react-redux';
+
 function Header({insideHome}) {
 
   const dispatch = useDispatch();
   const {wishlist} = useSelector(state => state.wishlistReducer);
+  const cart = useSelector(state => state.cartReducer);
   const [wishListCount, setWishListCount] = useState(0);
+  const [cartCount, setCartCount] = useState(0);
 
   useEffect(() => {
     setWishListCount(wishlist.length)
-  },[wishlist])
+    setCartCount(cart.length)
+  },[wishlist, cart])
 
   return (
     <div>
@@ -40,7 +44,7 @@ function Header({insideHome}) {
               <Nav.Link className='btn btn-outline-light ms-2'>
                 <Link to={'/cart'} style={{ color: "black", fontWeight: "bold", textDecoration: "none" }}>
                   <i className='fa-solid fa-cart-shopping text-warning'></i>Cart
-                  <Badge bg="success rounded ms-2">0</Badge>
+                  <Badge bg="success rounded ms-2">{cartCount}</Badge>
                 </Link>
               </Nav.Link>
             </Nav>

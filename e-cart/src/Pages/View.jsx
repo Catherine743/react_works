@@ -4,13 +4,14 @@ import Header from '../Components/Header'
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToWishlist } from '../Redux/slice/wishListSlice';
-
+import { addToCart } from '../Redux/slice/cartSlice';
 function View() {
 
   const {id} = useParams(); // used to get path related informations from url
   const [product, setProduct] = useState({});
   const dispatch = useDispatch();
   const { wishlist } = useSelector(state => state.wishlistReducer)
+  const cart = useSelector(state => state.cartReducer);
 
   useEffect(() => {
     const allProducts = JSON.parse(localStorage.getItem("allProducts"));
@@ -29,7 +30,19 @@ function View() {
       alert("Item added")
     }
   }
-
+  
+  const handleCart = (product) => {
+      const existingProduct = cart.find(item => item.id == product.id)
+      if(existingProduct) {
+         dispatch(addToCart(product))
+         alert("Items added")
+      }
+      else{
+        dispatch(addToCart(product))
+        alert("Item added")
+      }
+    }
+  
   return (
     <div>
       <Header />
@@ -46,7 +59,7 @@ function View() {
             <h3>Price: <span className='text-danger'>{product.price}</span></h3>
             <div className='d-flex justify-content-between'>
               <Button className='btn btn-info rounded' onClick={() => handleWishlist(product)}>Wishlist<i className='fa-solid fa-heart text-danger'></i></Button>
-              <Button className='btn btn-info rounded'>Cart<i className='fa-solid fa-cart-shopping text-success'></i></Button>
+              <Button className='btn btn-info rounded'onClick={() => handleCart(product)}>Cart<i className='fa-solid fa-cart-shopping text-success'></i></Button>
             </div>
           </div>
         </div>

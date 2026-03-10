@@ -5,12 +5,14 @@ import Header from '../Components/Header'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProducts } from '../Redux/slice/productSlice'
 import { addToWishlist } from '../Redux/slice/wishListSlice'
+import { addToCart } from '../Redux/slice/cartSlice'
 
 function Home() {
 
   const { allProducts, loading, error } = useSelector(state => state.productReducer)
   const { wishlist } = useSelector(state => state.wishlistReducer)
   const dispatch = useDispatch()
+  const cart = useSelector(state => state.cartReducer)
 
   useEffect(() => {
     dispatch(fetchProducts())
@@ -25,6 +27,18 @@ function Home() {
     }
     else{
       dispatch(addToWishlist(product))
+      alert("Item added")
+    }
+  }
+ 
+  const handleCart = (product) => {
+    const existingProduct = cart.find(item => item.id == product.id)
+    if(existingProduct) {
+       dispatch(addToCart(product))
+       alert("Items added")
+    }
+    else{
+      dispatch(addToCart(product))
       alert("Item added")
     }
   }
@@ -51,7 +65,7 @@ function Home() {
                   </Card.Text>
                   <div className='d-flex justify-content-between'>
                     <Button className='btn btn-light' onClick={() => handleWishlist(product)}><i className='fa-solid fa-heart text-danger'></i></Button>
-                    <Button className='btn btn-light'><i className='fa-solid fa-cart-shopping text-info'></i></Button>
+                    <Button className='btn btn-light' onClick={() => handleCart(product)}><i className='fa-solid fa-cart-shopping text-info'></i></Button>
                   </div>
                 </Card.Body>
               </Card>
