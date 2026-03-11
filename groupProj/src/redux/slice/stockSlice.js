@@ -32,21 +32,18 @@ const stockSlice = createSlice({
     },
 
     addSale: (state, action) => {
-      const { productId, quantity } = action.payload;
+      const { productId, quantity, totalAmount } = action.payload;
       const product = state.products.find(p => p.id === productId);
       if (!product || product.stock < quantity) return;
 
       product.stock -= quantity;
       product.sold += quantity;
 
-      const avgPrice = (product.minPrice + product.maxPrice) / 2;
-      const totalAmount = quantity * avgPrice;
-
       state.sales.push({
         id: Date.now(),
         productId,
         quantity,
-        totalAmount,
+        totalAmount : Number(totalAmount),
         date: new Date().toISOString(),
       });
 
@@ -66,6 +63,10 @@ const stockSlice = createSlice({
 
     clearProducts: (state) => {
       state.products = [];
+      state.sales = [];
+
+      localStorage.removeItem("products");
+      localStorage.removeItem("sales");
     },
   },
 });

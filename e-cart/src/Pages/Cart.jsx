@@ -1,13 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../Components/Header'
 import { useDispatch, useSelector } from 'react-redux'
-import { increment } from '../Redux/slice/cartSlice'
+import { decrement, emptyCart, increment, removeCart } from '../Redux/slice/cartSlice'
 
 function Cart() {
 
   const cart = useSelector(state => state.cartReducer)
+  const[total, setTotal] = useState(0);
   const dispatch = useDispatch();
+  
+  useEffect(() => {
+    if(cart.length > 0){
+      setTotal(cart.map(product => product.totalPrice).reduce((p1, p2) => p1 + p2))
+    }
+    else{
+      setTotal(0)
+    }
+  },[cart])
 
   return (
     <div>
@@ -35,13 +45,13 @@ function Cart() {
                         <td>{index + 1}</td>
                         <td>{product.title}</td>
                         <td><img src={product.thumbnail} alt="" /></td>
-                        <td><button className='btn text-danger fw-bolder'> - </button>
+                        <td><button className='btn text-danger fw-bolder' onClick={() => dispatch(decrement(product.id))}> - </button>
                           <input className='text-center' readOnly type='text' value={product.quantity} style={{ width: "25%" }} />
                           <button className='btn text-success fw-bolder' onClick={() => dispatch(increment(product.id))}> + </button>
                         </td>
                         <td className='text-danger'>{product.totalPrice}</td>
                         <td>
-                          <button className='btn'>
+                          <button className='btn' onClick={() => dispatch(removeCart(product.id))}>
                             <i className='fa-solid fa-trash text-danger'></i>
                           </button>
                         </td>
@@ -50,7 +60,7 @@ function Cart() {
                   </tbody>
                 </table>
                 <div className='d-flex justify-content-between mt-2'>
-                  <button className='btn btn-danger'>Empty Cart</button>
+                  <button className='btn btn-danger' onClick={() => dispatch(emptyCart())}>Empty Cart</button>
                   <Link to={'/'} className='btn btn-warning'>Shop More</Link>
                 </div>
               </div>
@@ -58,8 +68,8 @@ function Cart() {
             <div className='col-lg-4'>
               <div className='card shadow p-5'>
                 <h1>Cart Summary</h1>
-                <h2>Total Products: <span>.length</span></h2>
-                <h3>Total Price: <span className='text-danger'>total</span></h3>
+                <h2>Total Products: <span>{cart.length}</span></h2>
+                <h3>Total Price: <span className='text-danger'>{total}</span></h3>
               </div>
               <div className='d-grid m-2'>
                 <button className='btn btn-success rounded'>Checkout</button>

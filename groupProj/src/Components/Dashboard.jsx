@@ -23,11 +23,11 @@ export default function Dashboard() {
 
   // Total Revenue (All Time)
   const totalRevenue = useMemo(() =>
-    sales.reduce((acc, s) => acc + s.totalAmount, 0),
+    sales.reduce((sum, s) => sum + s.totalAmount, 0),
     [sales]
   );
 
-  // 1️⃣ Filter sales of selected month
+  // Filter sales of selected month
   const monthlySales = useMemo(() => {
     return sales.filter(sale => {
       const d = new Date(sale.date);
@@ -41,7 +41,7 @@ export default function Dashboard() {
 
 
 
-  // 2️⃣ Monthly Revenue
+  // Monthly Revenue
   const monthlyRevenue = useMemo(() => {
     return monthlySales.reduce(
       (sum, sale) => sum + sale.totalAmount,
@@ -51,7 +51,7 @@ export default function Dashboard() {
 
 
 
-  // 3️⃣ Product wise monthly data
+  // Product wise monthly data
   const salesDataForMonth = useMemo(() => {
 
     const data = {};
@@ -86,8 +86,7 @@ export default function Dashboard() {
   }, [monthlySales, products]);
 
 
-
-  // 4️⃣ Sorting + Most/Least sold
+  // Sorting + Most/Least sold
   const { sortedData, mostSold, leastSold } = useMemo(() => {
 
     if (!salesDataForMonth.length)
@@ -128,7 +127,6 @@ export default function Dashboard() {
   }, [salesDataForMonth, sortType]);
 
 
-
   // Profit (20%)
   const profit = monthlyRevenue * 0.2;
 
@@ -155,7 +153,7 @@ export default function Dashboard() {
 
     <div className="dashboard-card">
 
-      <h2>📊 Smart Analytics Dashboard</h2>
+      <h2>Smart Analytics Dashboard</h2>
 
       <p>Total Products: {products.length}</p>
 
@@ -168,16 +166,16 @@ export default function Dashboard() {
       <p>Estimated Profit (20%): ₹{profit.toFixed(2)}</p>
 
       {mostSold && (
-        <p>📈 Most Sold: {mostSold.name} ({mostSold.quantity})</p>
+        <p>Most Sold: {mostSold.name} ({mostSold.quantity})</p>
       )}
 
       {leastSold && (
-        <p>📦 Least Sold: {leastSold.name} ({leastSold.quantity})</p>
+        <p>Least Sold: {leastSold.name} ({leastSold.quantity})</p>
       )}
 
       <hr />
 
-      <h3>📅 Select Month & Year</h3>
+      <h3> Select Month & Year</h3>
 
       <div style={{ display: "flex", gap: "15px", marginBottom: "20px" }}>
 
@@ -207,7 +205,7 @@ export default function Dashboard() {
 
       <hr />
 
-      <h3>🔎 Sort Products</h3>
+      <h3> Sort Products</h3>
 
       <select
         value={sortType}
@@ -220,7 +218,7 @@ export default function Dashboard() {
 
       <hr />
 
-      <h3>📊 Sales Chart</h3>
+      <h3> Sales Chart</h3>
 
       <BarChart
         width={500}
@@ -240,7 +238,7 @@ export default function Dashboard() {
 
       <hr />
 
-      <h3>🥧 Revenue Distribution</h3>
+      <h3> Revenue Distribution</h3>
 
       <PieChart width={500} height={350}>
 
