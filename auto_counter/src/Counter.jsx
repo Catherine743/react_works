@@ -54,13 +54,13 @@ function Counter() {
 
             <Button
               variant="secondary"
-              className='m-2 px-4'
+              className='m-2 px-4 '
               onClick={reset}
             >
               Reset
             </Button>
           </div>
-          
+
         </div>
       </div>
     </div>

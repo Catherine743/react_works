@@ -28,7 +28,7 @@ function Discount() {
 
   return (
     <div className="d-flex justify-content-center mt-4">
-      <div className="w-50 bg-white text-dark p-4 rounded shadow">
+      <div className=" col-8 col-md-6 col-lg-4 bg-white text-dark p-4 rounded shadow">
 
         <div className="mb-3 text-start">
           <label className="form-label">Amount (₹)</label>
@@ -52,16 +52,16 @@ function Discount() {
           />
         </div>
 
-        <div className="d-flex justify-content-between">
+        <div className="d-flex justify-content-between flex-wrap gap-2">
           <button
-            className="btn btn-success"
+            className="btn btn-success gap-1"
             onClick={handleCalculate}
           >
             Calculate
           </button>
 
           <button
-            className="btn btn-danger"
+            className="btn btn-danger gap-1"
             onClick={handleReset}
           >
             Reset
