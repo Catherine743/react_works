@@ -33,22 +33,34 @@ function Counter() {
 
   return (
     <div>
-      <div className='container' style={{ marginTop: "200px" }}>
-        <div className='text-center'>
-          <h1 className='text-primary'>Auto-Counter-Application</h1>
-          <h1 className='fw-bolder'>{counter}</h1>
-        </div>
-        <div className='text-center m-3 p-4'>
-          <Button 
-            variant={isRunning ? "danger" : "success"} 
-            className='m-2'
-            onClick={toggleCounter}
+      <div className='container d-flex justify-content-center align-items-center' style={{ height: "100vh" }}>
+        <div className='text-center p-5 shadow rounded' style={{ width: "700px", backgroundColor: "#f8f9fa" }}>
+          <h2 className='text-primary mb-4 fw-bold'>Auto Counter Application</h2>
+          <h1
+            className='fw-bolder mb-4'
+            style={{ fontSize: "70px", color: "#343a40" }}
           >
-            {isRunning ? "Pause" : "Resume"}
-          </Button>
-          <Button variant="secondary" className='m-2' onClick={reset}>
-            Reset
-          </Button>
+            {counter}
+          </h1>
+
+          <div className='mt-3'>
+            <Button
+              variant={isRunning ? "danger" : "success"}
+              className='m-2 px-4'
+              onClick={toggleCounter}
+            >
+              {isRunning ? "Pause" : "Resume"}
+            </Button>
+
+            <Button
+              variant="secondary"
+              className='m-2 px-4'
+              onClick={reset}
+            >
+              Reset
+            </Button>
+          </div>
+          
         </div>
       </div>
     </div>
