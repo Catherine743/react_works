@@ -28,6 +28,7 @@ function App() {
         <Route path='/all-book' element={<Allbook />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/login' element={<Auth />} />
+        <Route path='/register' element={<Auth register/>} />
 
         {/* user */}
         <Route path='/profile' element={<Profile />} />
