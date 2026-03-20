@@ -23,20 +23,21 @@ function Adminprofile() {
             </div>
             <div className='rounded bg-blue-100 p-10 flex justify-center items-center flex-col mt-10 md:mt-0'>
               <label htmlFor="adminPic" className='mb-3'>
-                <img src="https://img.freepik.com/premium-vector/man-character_665280-46970.jpg" width={'200px'} height={'200px'} alt="book" />
+                <img src="https://img.freepik.com/premium-vector/man-character_665280-46970.jpg" style={{ width: '200px', height: '200px', borderRadius: '50%' }} alt="admin profile" />
                 <input type="file" name='' id='adminPic' className='hidden' />
               </label>
-              <div className='mb-3 w-full'>
+              <div className='mb-3 w-full mt-20'>
                 <input type="text" className='p-2 bg-white border border-gray-200 text-black w-full rounded placeholder-gray-600' placeholder='Username'/>
               </div>
               <div className='mb-3 w-full'>
                 <input type="text" className='p-2 bg-white border border-gray-200 text-black w-full rounded placeholder-gray-600' placeholder='Password'/>
               </div>
-              <div className='mb-3 w-full mt-20'>
+              <div className='mb-3 w-full '>
                 <input type="text" className='p-2 bg-white border border-gray-200 text-black w-full rounded placeholder-gray-600' placeholder='Confirm Password'/>
               </div>
-              <div className='mb-3 w-full flex justify-evenly'>
-                <button className='bg-orange-600 text-white'></button>
+              <div className='my-3 w-full flex justify-evenly'>
+                <button className='bg-orange-600 text-white px-4 py-2 rounded'>RESET</button>
+                <button className='bg-green-900 text-white px-4 py-2 rounded'>UPDATE</button>
               </div>
             </div>
           </div>
