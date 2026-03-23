@@ -42,7 +42,7 @@ function MovieSearch() {
   };
 
   return (
-    <div className="w-25 mx-auto mt-5 text-center pb-5">
+    <div className="col-md-6 col-lg-4 col-10 mx-auto mt-5 text-center pb-5">
       {/* Search Bar */}
       <div className="d-flex justify-content-center gap-3">
         <input

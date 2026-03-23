@@ -40,13 +40,13 @@ function Weather() {
 
   return (
     <div>
-      <div className="w-25 mx-auto mt-5 text-center">
+      <div className="col-md-6 col-lg-4 col-10 mx-auto mt-5 text-center">
         {/* Search Bar */}
         <div className="d-flex justify-content-center gap-3">
           <input
             type="text"
             placeholder="Enter city name"
-            className="form-control w-50"
+            className="form-control w-75"
             value={city}
             onChange={(e) => setCity(e.target.value)}
           />
