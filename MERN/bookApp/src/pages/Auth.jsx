@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { CiUser } from 'react-icons/ci'
 import { FaEye, FaEyeSlash } from 'react-icons/fa6'
 import { Link, useNavigate } from 'react-router-dom'
-import { registerAPI } from '../services/allAPI'
+import { loginAPI, registerAPI } from '../services/allAPI'
 import { Bounce, ToastContainer, toast } from 'react-toastify'
 
 function Auth({ register }) {
@@ -38,6 +38,41 @@ function Auth({ register }) {
     }
   }
 
+  // handleLogin
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const { email, password } = userDetails;
+    if (email && password) {
+      const result = await loginAPI(userDetails);
+      // console.log(result);
+      if (result.status == 200) {
+        toast.success("User logined");
+        sessionStorage.setItem("token", result.data.token);
+        sessionStorage.setItem("user", JSON.stringify(result.data.user));
+        setUserDetails({ email: "", password: "" });
+        setTimeout(() => {
+          if (result.data.role == "admin") {
+            navigate('/admin/home')
+          }
+          else {
+            navigate('/')
+          }
+        }, 2000)
+      }
+      else if (result.status == 401 || result.status == 404) {
+        toast.warning(result.response.data)
+        setUserDetails({ email: "", password: ""})
+      }
+      else{
+        toast.error("Something went wrong");
+        console.log(result);
+      }
+    }
+    else{
+      toast.info("Please fill the form");
+    }
+  }
+  
   return (
     <div className='w-full min-h-screen flex justify-center items-center flex-col bg-[url(https://img.freepik.com/free-photo/open-book-more-books_23-2148213810.jpg?t=st=1721778194~exp=1721781794~hmac=ccb27007259d20e3b0ac7ba53bfb8abba03070caa5b56b85535d3cbc7e9a87f9&w=1060)] bg-cover bg-center'>
       <div className='p-10'>
@@ -71,7 +106,7 @@ function Auth({ register }) {
                 register ?
                   <button type='button' className='bg-green-700 p-2 w-full rounded' onClick={handleRegister}>Register</button>
                   :
-                  <button type='button' className='bg-green-700 p-2 w-full rounded'>Login</button>
+                  <button type='button' className='bg-green-700 p-2 w-full rounded' onClick={handleLogin}>Login</button>
               }
             </div>
             <div className='my-5 text-center'>
