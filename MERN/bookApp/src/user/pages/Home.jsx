@@ -1,8 +1,32 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../../components/Footer'
+import { useNavigate } from 'react-router-dom'
+import { Bounce, toast, ToastContainer } from 'react-toastify'
 
 function Home() {
+
+  const [searchKey, setSearchKey] = useState("")
+  const navigate = useNavigate()
+
+  const handleSearch = () => {
+    if (!searchKey) {
+      toast.warning("Please input Book title here!!")
+    }
+    else if (!sessionStorage.getItem("token")) {
+      toast.warning("Please Login!!")
+      setTimeout(() => {
+        navigate('/login')
+      }, 2000)
+    }
+    else if (sessionStorage.getItem("token") && searchKey) {
+      navigate('/all-books')
+    }
+    else {
+      toast.error("Something went wrong!!!")
+    }
+  }
+
   return (
     <div>
       <Header />
@@ -21,9 +45,10 @@ function Home() {
             type="text"
             placeholder="Search Books"
             className="px-4 py-2 w-full outline-none text-gray-700"
+            onChange={e => setSearchKey(e.target.value)}
           />
 
-          <button className="bg-blue-600 text-white px-6">
+          <button onClick={handleSearch} className="bg-blue-600 text-white px-6">
             Search
           </button>
         </div>
@@ -171,8 +196,14 @@ function Home() {
         </p>
 
       </section>
-      
-         <Footer />
+
+      <Footer />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        theme="colored"
+        transition={Bounce}
+      />
     </div>
   )
 }

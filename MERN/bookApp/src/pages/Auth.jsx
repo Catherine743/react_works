@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import { CiUser } from 'react-icons/ci'
 import { FaEye, FaEyeSlash } from 'react-icons/fa6'
 import { Link, useNavigate } from 'react-router-dom'
-import { loginAPI, registerAPI } from '../services/allAPI'
+import { googleLoginAPI, loginAPI, registerAPI } from '../services/allAPI'
 import { Bounce, ToastContainer, toast } from 'react-toastify'
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode"
 
 function Auth({ register }) {
 
@@ -61,18 +63,44 @@ function Auth({ register }) {
       }
       else if (result.status == 401 || result.status == 404) {
         toast.warning(result.response.data)
-        setUserDetails({ email: "", password: ""})
+        setUserDetails({ email: "", password: "" })
       }
-      else{
+      else {
         toast.error("Something went wrong");
         console.log(result);
       }
     }
-    else{
+    else {
       toast.info("Please fill the form");
     }
   }
-  
+
+  // googleLogin
+  const handleGoogleLogin = async (credentialResponse) => {
+    console.log("Inside google login");
+    console.log(credentialResponse);
+    const decode = jwtDecode(credentialResponse.credential)
+    console.log(decode.email, decode.name, decode.picture);
+    const result = await googleLoginAPI({ email: decode.email, password: 'googlepassword', username: decode.name, picture: decode.picture })
+    if (result.status == 200) {
+      toast.success("User logined");
+      sessionStorage.setItem("token", result.data.token);
+      sessionStorage.setItem("user", JSON.stringify(result.data.user));
+      setTimeout(() => {
+        if (result.data.role == "admin") {
+          navigate('/admin/home')
+        }
+        else {
+          navigate('/')
+        }
+      }, 2000)
+    }
+    else {
+      toast.error("Something went wrong");
+      console.log(result);
+    }
+  }
+
   return (
     <div className='w-full min-h-screen flex justify-center items-center flex-col bg-[url(https://img.freepik.com/free-photo/open-book-more-books_23-2148213810.jpg?t=st=1721778194~exp=1721781794~hmac=ccb27007259d20e3b0ac7ba53bfb8abba03070caa5b56b85535d3cbc7e9a87f9&w=1060)] bg-cover bg-center'>
       <div className='p-10'>
@@ -109,6 +137,20 @@ function Auth({ register }) {
                   <button type='button' className='bg-green-700 p-2 w-full rounded' onClick={handleLogin}>Login</button>
               }
             </div>
+            {/* google authentication */}
+            {register && <div className='text-center my-5'>
+              <p>--------------- OR ---------------</p>
+              <div className='mt-2 flex justify-center items-center w-full'>
+                <GoogleLogin
+                  onSuccess={credentialResponse => {
+                    handleGoogleLogin(credentialResponse);
+                  }}
+                  onError={() => {
+                    console.log('Login Failed');
+                  }}
+                />
+              </div>
+            </div>}
             <div className='my-5 text-center'>
               {
                 register ?
