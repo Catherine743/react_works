@@ -1,13 +1,20 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../../components/Footer'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Bounce, toast, ToastContainer } from 'react-toastify'
-
+import { getHomeBooksAPI } from '../../services/allAPI'
+import { searchContext } from '../../ContextAPI/ShareContext'
 function Home() {
 
-  const [searchKey, setSearchKey] = useState("")
+  // const [searchKey, setSearchKey] = useState("")
+  const {searchKey, setSearchKey} = useContext(searchContext)
   const navigate = useNavigate()
+  const [homeBooks, setHomeBooks] = useState([])
+
+  useEffect(() => {
+    getHomeBooks()
+  }, [])
 
   const handleSearch = () => {
     if (!searchKey) {
@@ -26,6 +33,18 @@ function Home() {
       toast.error("Something went wrong!!!")
     }
   }
+
+  const getHomeBooks = async () => {
+    const result = await getHomeBooksAPI()
+    if (result.status == 200) {
+      setHomeBooks(result.data)
+    }
+    else {
+      console.log(result);
+    }
+  }
+
+  console.log(homeBooks);
 
   return (
     <div>
@@ -68,72 +87,21 @@ function Home() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-
-
-          {/* Card 1 */}
-          <div className="bg-white shadow rounded">
-            <img
-              src="https://images.unsplash.com/photo-1512820790803-83ca734da794"
-              className="w-full h-60 object-cover"
-            />
-
-            <div className="p-4">
-              <h4 className="text-blue-600">Inspirational Book</h4>
-              <p className="text-gray-500">Motivation & Life</p>
-              <p className="mt-2 font-semibold">$ 200</p>
+          {homeBooks.map((book, index) => (
+            <div key={index} className="bg-white shadow-sm p-3 text-center">
+              <img
+                src={book.imageUrl}
+                className="w-full h-64 object-cover mb-3"
+              />
+              <h4 className="text-blue-600 text-sm">{book.author}...</h4>
+              <p className="text-gray-500 text-sm">{book.title}...</p>
+              <p className="text-blue-500 text-sm">${book.price}</p>
             </div>
-          </div>
-
-
-          {/* Card 2 */}
-          <div className="bg-white shadow rounded">
-            <img
-              src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c"
-              className="w-full h-60 object-cover"
-            />
-
-            <div className="p-4">
-              <h4 className="text-blue-600">Knowledge Book</h4>
-              <p className="text-gray-500">Education</p>
-              <p className="mt-2 font-semibold">$ 90</p>
-            </div>
-          </div>
-
-
-          {/* Card 3 */}
-          <div className="bg-white shadow rounded">
-            <img
-              src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d"
-              className="w-full h-60 object-cover"
-            />
-
-            <div className="p-4">
-              <h4 className="text-blue-600">Long Walk to Freedom</h4>
-              <p className="text-gray-500">Biography</p>
-              <p className="mt-2 font-semibold">$ 200</p>
-            </div>
-          </div>
-
-
-          {/* Card 4 */}
-          <div className="bg-white shadow rounded">
-            <img
-              src="https://images.unsplash.com/photo-1519682337058-a94d519337bc"
-              className="w-full h-60 object-cover"
-            />
-
-            <div className="p-4">
-              <h4 className="text-blue-600">Story Book</h4>
-              <p className="text-gray-500">Fiction</p>
-              <p className="mt-2 font-semibold">$ 123</p>
-            </div>
-          </div>
-
-
+          ))}
         </div>
 
         <button className="mt-10 bg-blue-700 text-white px-6 py-2 rounded hover:bg-blue-800">
-          Explore More
+          <Link to={'/all-books'}>Explore More</Link>
         </button>
 
       </section>

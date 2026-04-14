@@ -25,7 +25,7 @@ function App() {
     <>
       <Routes>
         <Route path='/' element={loader? <Preloader /> : <Home />} />
-        <Route path='/all-book' element={<Allbook />} />
+        <Route path='/all-books' element={<Allbook />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/login' element={<Auth />} />
         <Route path='/register' element={<Auth register/>} />

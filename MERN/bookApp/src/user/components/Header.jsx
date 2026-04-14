@@ -50,7 +50,7 @@ function Header() {
                :
                <div className="relative inline-block text-left">
                   <button onClick={() => setDropDown(!dropDown)} className="w-full bg-white px-3 py-2  shadow-xs hover:bg-gray-50">
-                     <img width={'40px'} height={'40px'} style={{ borderRadius: '50%' }} className="mx-2" src="ffff" alt="user" />
+                     <img width={'40px'} height={'40px'} style={{ borderRadius: '50%' }} className="mx-2" src={dp? dp : "http://pluspng.com/img-png/user-png-icon-male-user-icon-512.png"} alt="user" />
                   </button>
                   { dropDown && <div className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden">
                      <div className="py-1">
@@ -73,8 +73,8 @@ function Header() {
                </Link>
                :
                <div className="relative inline-block text-left">
-                  <button className="w-full  px-3 py-2 bg-gray-500 shadow-xs hover:bg-gray-50 rounded">
-                     <img width={'40px'} height={'40px'} style={{ borderRadius: '50%' }} className="mx-2" src="http://pluspng.com/img-png/user-png-icon-male-user-icon-512.png" alt="user" />
+                  <button onClick={() => setDropDown(!dropDown)} className="w-full  px-3 py-2 bg-gray-500 shadow-xs hover:bg-gray-50 rounded">
+                     <img width={'40px'} height={'40px'} style={{ borderRadius: '50%' }} className="mx-2" src={dp? dp : "http://pluspng.com/img-png/user-png-icon-male-user-icon-512.png"} alt="user" />
                   </button>
                   { dropDown && <div className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden">
                      <div className="py-1">
