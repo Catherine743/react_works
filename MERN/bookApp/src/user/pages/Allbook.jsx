@@ -123,7 +123,7 @@ function Allbook() {
                   <div className="flex flex-col justify-center items-center mt-4">
                     <h4 className="text-blue-700 font-bold text-lg">{book?.author}</h4>
                     <p className="text-gray-500">{book?.title}</p>
-                    <Link to={'/view/:id'} className='bg-blue-800 p-2 text-white'>View</Link>
+                    <Link to={`/view/${book?._id}`} className='bg-blue-800 p-2 text-white'>View Book</Link>
                   </div>
                 </div>)) : <p className='font-bold'>Loading...</p>}
             </div>

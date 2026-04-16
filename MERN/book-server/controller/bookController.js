@@ -47,10 +47,10 @@ exports.getAllUserBookController = async (req, res) => {
 
     const searchKey = req.query.search
     console.log(searchKey);
-    
+
     const loginUserMail = req.payload
     try {
-        const allBooks = await books.find({ sellerMail: {$ne: loginUserMail} })
+        const allBooks = await books.find({ sellerMail: { $ne: loginUserMail }, title: { $regex: searchKey, $options: 'i' } })
         res.status(200).json(allBooks)
     } catch (error) {
         console.log(error);
@@ -63,7 +63,7 @@ exports.getUserProfileBookController = async (req, res) => {
     console.log("Inside get UserProfileBookController");
     const loginUserMail = req.payload;
     try {
-        const userBooks = await books.find({ sellerMail:  loginUserMail })
+        const userBooks = await books.find({ sellerMail: loginUserMail })
         res.status(200).json(userBooks)
     } catch (error) {
         console.log(error);
@@ -76,7 +76,7 @@ exports.getPurchaseBookController = async (req, res) => {
     console.log("Inside get PurchaseBookController");
     const loginUserMail = req.payload;
     try {
-        const purchaseBooks = await books.find({ buyerMail:  loginUserMail })
+        const purchaseBooks = await books.find({ buyerMail: loginUserMail })
         res.status(200).json(purchaseBooks)
     } catch (error) {
         console.log(error);
@@ -84,4 +84,16 @@ exports.getPurchaseBookController = async (req, res) => {
     }
 }
 
+// viewBookController
 
+exports.viewBookController = async (req, res) => {
+    console.log("Inside get viewBookController");
+    const { id } = req.params
+    try {
+        const viewBooks = await books.findById({ _id: id })
+        res.status(200).json(viewBooks)
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error)
+    }
+}

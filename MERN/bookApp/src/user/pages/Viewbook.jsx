@@ -1,9 +1,39 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaTimes } from 'react-icons/fa';
 import { FaArrowLeft, FaCamera, FaEye } from 'react-icons/fa6'
+import { viewBookAPI } from '../../services/allAPI';
+import { useParams } from 'react-router-dom';
 
 function Viewbook() {
   const [showModal, setShowModal] = useState(false);
+  const {id} = useParams()
+  const [book, setBook] = useState({})
+  
+  useEffect(() => {
+    viewBooks()
+  },[])
+
+  const viewBooks = async () => {
+      const token = sessionStorage.getItem("token")
+      if (token) {
+      const reqHeader = {
+        "Authorization": `Bearer ${token}`
+      }
+      const result = await viewBookAPI(id, reqHeader)
+      if (result.status == 200) {
+        setBook(result.data)
+      }
+      else {
+        console.log(result);
+      }
+    }
+    else {
+      console.log("Error"); 
+    }
+  }
+  
+  console.log(book);
+  
   return (
     <div className="bg-gray-100 min-h-screen p-10">
 
@@ -18,7 +48,7 @@ function Viewbook() {
 
         {/* LEFT IMAGE */}
         <img
-          src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f"
+          src={book?.imageUrl}
           className="w-64 h-80 object-cover"
         />
 
@@ -26,29 +56,26 @@ function Viewbook() {
         <div className="flex-1">
 
           <h2 className="text-2xl font-serif text-center mb-1">
-            Becoming
+            {book?.title}
           </h2>
           <p className="text-center text-blue-500 mb-4">
-            - Michelle Obama
+            {book?.author}
           </p>
 
           {/* DETAILS GRID */}
           <div className="grid grid-cols-3 gap-y-2 text-sm mb-4">
-            <p>Publisher : Crown (North America)</p>
-            <p>Language : English</p>
-            <p>No. of pages : 448</p>
-
-            <p>Seller Mail : neel@gmail.com</p>
-            <p>Real Price : $ 25</p>
-            <p>ISBN : 978-1-5247-6313-8</p>
+            <p className='font-bold'>Publisher : {book?.publisher}</p>
+            <p className='font-bold'>Language : {book?.language}</p>
+            <p className='font-bold'>No. of pages : {book?.pages}</p>
+            <p className='font-bold'>Seller Mail : {book?.sellerMail}</p>
+            <p className='font-bold'>Real Price : $ {book?.price}</p>
+            <p className='font-bold'>ISBN : {book?.isbn}</p>
+            <p className='font-bold'>Category : {book?.category}</p>
           </div>
 
           {/* DESCRIPTION */}
           <p className="text-gray-600 text-sm leading-relaxed mb-6">
-            Becoming is a deeply personal memoir by Michelle Obama,
-            chronicling her journey from childhood to becoming the First Lady.
-            It explores identity, challenges, and life experiences, offering
-            readers a powerful and inspiring story.
+            {book?.abstract}
           </p>
 
           {/* BUTTONS */}
