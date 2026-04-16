@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { CiTwitter, CiUser } from 'react-icons/ci'
 import { FaBarsProgress, FaFacebookF, FaInstagram } from 'react-icons/fa6'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 
 function Header() {
 
    const [listStatus, setListStatus] = useState(false);
-
    const [token, setToken] = useState("")
    const [dp, setDp] = useState("")
    const [dropDown, setDropDown] = useState(false)
+   const navigate = useNavigate()
 
    useEffect(() => {
       if (sessionStorage.getItem("token") && sessionStorage.getItem("user")) {
@@ -20,6 +20,14 @@ function Header() {
          setDp(user.picture)
       }
    }, [token])
+   
+   const logout = () => {
+      sessionStorage.clear()
+      setToken("")
+      setDp("")
+      setDropDown(false)
+      navigate('/')
+   }
 
    return (
       <div>
