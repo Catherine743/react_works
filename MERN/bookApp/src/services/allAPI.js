@@ -45,3 +45,8 @@ export const getUserPurchasedAPI = async (reqHeader) => {
 export const viewBookAPI = async (id, reqHeader) => {
     return await commonAPI("GET", `${server_url}/view/${id}`, {}, reqHeader)
 }
+
+// editUserAPI
+export const editUserAPI = async (id, reqBody, reqHeader) => {
+    return await commonAPI("PUT", `${server_url}/user/${id}/edit`, reqBody, reqHeader)
+}

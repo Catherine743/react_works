@@ -34,4 +34,7 @@ router.get('/user-books/buy', jwtMiddleware, bookController.getPurchaseBookContr
 // viewBook
 router.get('/view/:id', jwtMiddleware, bookController.viewBookController)
 
+// updateUser
+router.put('/user/:id/edit', jwtMiddleware, multerMiddleware.single('picture'), userController.editUserController)
+
 module.exports = router

@@ -4,8 +4,7 @@ import { FaUserCircle } from 'react-icons/fa'
 import Edit from '../components/Edit'
 import { FaPlus } from 'react-icons/fa6'
 import { Bounce, ToastContainer, toast } from 'react-toastify'
-import { addBookAPI, getUserProfileBooksAPI } from '../../services/allAPI'
-
+import { addBookAPI, getUserProfileBooksAPI, getUserPurchasedAPI } from '../../services/allAPI'
 
 function Profile() {
 
