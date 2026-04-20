@@ -98,7 +98,7 @@ function Allbook() {
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
 
                 {allBooks?.length > 0 ? allBooks?.map(book => (
-                  <div className="shadow rounded p-3 mx-4 my-3">
+                  <div className="shadow rounded p-3 mx-4 my-3" hidden={book.status == 'pending' || book.status == 'sold'}>
                     <img
                       src={book?.imageUrl}
                       width={'100%'}

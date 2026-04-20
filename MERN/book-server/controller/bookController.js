@@ -97,3 +97,16 @@ exports.viewBookController = async (req, res) => {
         res.status(500).json(error)
     }
 }
+
+// getAllBooksController'
+exports.getAllBooksController = async (req, res) => {
+    console.log("Inside get AllBooks Controller");
+    try {
+        const allBooks = await books.find()
+        res.status(200).json(allBooks)
+    }
+    catch (error){
+        console.log(error);
+        res.status(500).json(error)
+    }
+}

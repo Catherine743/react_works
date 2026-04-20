@@ -37,6 +37,7 @@ function Edit() {
 
   const handleUpdateUser = async () => {
     const { username, password, cpassword, bio, role, picture, id } = userDetails
+    console.log(userDetails);
 
     if (!username || !password || !cpassword || !bio || !picture) {
       toast.info("Please fill the form completely")
@@ -75,6 +76,13 @@ function Edit() {
     else {
       toast.warning("Operation failed!!! Password mismatch")
     }
+  }
+
+  const handleReset = () => {
+    const user = JSON.parse(sessionStorage.getItem('user'))
+    setUserDetails({ username: user.username, bio: user.bio, password: "", cpassword: "" })
+    setExistingImage(user.picture)
+    setPreview("")
   }
 
   return (
@@ -118,10 +126,10 @@ function Edit() {
               <input value={userDetails.username} onChange={e => setUserDetails({ ...userDetails, username: e.target.value })} type="text" placeholder='Username' className="w-full border border-gray-300 p-2 rounded" />
             </div>
             <div className=" mb-3 w-full px-5">
-              <input onChange={e => setUserDetails({ ...userDetails, password: e.target.value })} type="password" placeholder='New Password' className="w-full border border-gray-300 p-2 rounded" />
+              <input value={userDetails.password} onChange={e => setUserDetails({ ...userDetails, password: e.target.value })} type="password" placeholder='New Password' className="w-full border border-gray-300 p-2 rounded" />
             </div>
             <div className=" mb-3 w-full px-5">
-              <input onChange={e => checkPswdMatch(e.target.value)} type="password" placeholder='Confirm Password' className="w-full border border-gray-300 p-2 rounded" />
+              <input value={userDetails.cpassword} onChange={e => checkPswdMatch(e.target.value)} type="password" placeholder='Confirm Password' className="w-full border border-gray-300 p-2 rounded" />
             </div>
             {
               !pswdMatch && <div className='text-red-600 mb-3 w-full px-5 text-xs font-bold'>
@@ -132,7 +140,7 @@ function Edit() {
               <textarea value={userDetails.bio} onChange={e => setUserDetails({ ...userDetails, bio: e.target.value })} type="text" placeholder='Bio' className="w-full border border-gray-300 p-2 rounded" />
             </div>
             <div className="flex justify-end  w-full px-5 mt-5">
-              <button className="bg-yellow-600 text-white px-3 py-2 rounded">RESET</button>
+              <button onClick={handleReset} className="bg-yellow-600 text-white px-3 py-2 rounded">RESET</button>
               <button onClick={handleUpdateUser} className="bg-green-600 ms-5 text-white px-3 py-2 rounded">UPDATE</button>
             </div>
           </div>

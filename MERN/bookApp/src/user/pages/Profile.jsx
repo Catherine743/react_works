@@ -5,6 +5,7 @@ import Edit from '../components/Edit'
 import { FaPlus } from 'react-icons/fa6'
 import { Bounce, ToastContainer, toast } from 'react-toastify'
 import { addBookAPI, getUserProfileBooksAPI, getUserPurchasedAPI } from '../../services/allAPI'
+import { server_url } from '../../services/server_url'
 
 function Profile() {
 
@@ -142,7 +143,7 @@ function Profile() {
       <Header />
       <div style={{ height: '200px' }} className='bg-black'></div>
       <div style={{ width: '230px', height: '230px', borderRadius: '50%', marginLeft: '70px', marginTop: '-130px' }} className='bg-white p-3'>
-        <img src={dp ? dp : "https://cdn-icons-png.flaticon.com/512/149/149071.png"} alt="profile" style={{ width: '200px', height: '200px', borderRadius: '50%' }} />
+        <img src={dp == "" ? "https://cdn-icons-png.flaticon.com/512/149/149071.png" : dp.startsWith('https://lh3.googleusercontent.com/') ? dp : `${server_url}/uploads/${dp}`} alt="profile" style={{ width: '200px', height: '200px', borderRadius: '50%' }} />
       </div>
       <div className='md:flex justify-between px-20 mt-5'>
         <div className='flex items-center'>
@@ -265,7 +266,7 @@ function Profile() {
                         <img width={'80px'} height={'80px'} src="https://pngimg.com/uploads/approved/approved_PNG1.png" alt="approved icon" /> :
                         <img width={'120px'} height={'120px'} src="https://cdn-icons-png.flaticon.com/512/6188/6188726.png" alt="sold icon" />
                     }
-                  </div>z
+                  </div>
                 </div>
                 <div className='px-4 mt-4 md:mt-0'>
                   <img src={book.imageUrl} alt="book" className='w-full' />

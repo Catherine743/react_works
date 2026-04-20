@@ -9,4 +9,7 @@ router.post('/register', userController.registerController)
 // login
 router.post('/login', userController.loginController)
 
+// googleLogin
+router.post('/google-login', userController.googleLoginController)
+
 module.exports = router

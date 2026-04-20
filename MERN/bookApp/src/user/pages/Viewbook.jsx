@@ -3,19 +3,20 @@ import { FaTimes } from 'react-icons/fa';
 import { FaArrowLeft, FaCamera, FaEye } from 'react-icons/fa6'
 import { viewBookAPI } from '../../services/allAPI';
 import { useParams } from 'react-router-dom';
+import { server_url } from '../../services/server_url';
 
 function Viewbook() {
   const [showModal, setShowModal] = useState(false);
-  const {id} = useParams()
+  const { id } = useParams()
   const [book, setBook] = useState({})
-  
+
   useEffect(() => {
     viewBooks()
-  },[])
+  }, [])
 
   const viewBooks = async () => {
-      const token = sessionStorage.getItem("token")
-      if (token) {
+    const token = sessionStorage.getItem("token")
+    if (token) {
       const reqHeader = {
         "Authorization": `Bearer ${token}`
       }
@@ -28,12 +29,12 @@ function Viewbook() {
       }
     }
     else {
-      console.log("Error"); 
+      console.log("Error");
     }
   }
-  
+
   console.log(book);
-  
+
   return (
     <div className="bg-gray-100 min-h-screen p-10">
 
@@ -115,15 +116,12 @@ function Viewbook() {
 
               <div className="flex gap-6 justify-center">
 
-                <img
-                  src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f"
-                  className="w-60 h-40 object-cover rounded"
-                />
-
-                <img
-                  src="https://images.unsplash.com/photo-1519682337058-a94d519337bc"
-                  className="w-60 h-40 object-cover rounded"
-                />
+                {
+                  book?.uploadImg?.length > 0 ? book.uploadImg.map((index, filename) => (
+                    <img key={index} width={'250px'} height={'250px'} className='mx-2 md:mb-0 mb-2' src={`${server_url}/uploads/${filename}`} alt="book images" />
+                  )) :
+                    <p>Nothing to display</p>
+                }
 
               </div>
 

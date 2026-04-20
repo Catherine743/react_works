@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { CiTwitter, CiUser } from 'react-icons/ci'
 import { FaBarsProgress, FaFacebookF, FaInstagram } from 'react-icons/fa6'
 import { Link, useNavigate } from 'react-router-dom'
-
+import { server_url } from '../../services/server_url'
 
 function Header() {
 
@@ -20,7 +20,7 @@ function Header() {
          setDp(user.picture)
       }
    }, [token])
-   
+
    const logout = () => {
       sessionStorage.clear()
       setToken("")
@@ -50,23 +50,24 @@ function Header() {
                <FaFacebookF className='m-2' />
 
                {/* login link */}
-               { !token? <Link to={"/login"}>
+               {!token ? <Link to={"/login"}>
                   <button className='border border-black flex rounded px-3 py-2 ms-3 hover:bg-black hover:text-white'>
                      <CiUser />Login
                   </button>
                </Link>
-               :
-               <div className="relative inline-block text-left">
-                  <button onClick={() => setDropDown(!dropDown)} className="w-full bg-white px-3 py-2  shadow-xs hover:bg-gray-50">
-                     <img width={'40px'} height={'40px'} style={{ borderRadius: '50%' }} className="mx-2" src={dp? dp : "http://pluspng.com/img-png/user-png-icon-male-user-icon-512.png"} alt="user" />
-                  </button>
-                  { dropDown && <div className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden">
-                     <div className="py-1">
-                        <Link className="block px-4 py-2 text-sm text-gray-700" to={'/profile'}>  Profile </Link>
-                        <button className="block px-4 py-2 text-sm text-gray-700"> Logout</button>
-                     </div>
+                  :
+                  <div className="relative inline-block text-left">
+                     <button onClick={() => setDropDown(!dropDown)} className="w-full bg-white px-3 py-2  shadow-xs hover:bg-gray-50">
+                        <img width={'40px'} height={'40px'} style={{ borderRadius: '50%' }} className="mx-2"
+                           src={dp == "" ? "http://pluspng.com/img-png/user-png-icon-male-user-icon-512.png" : dp.startsWith('https://lh3.googleusercontent.com/') ? dp : `${server_url}/uploads/${dp}`} alt="user" />
+                     </button>
+                     {dropDown && <div className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden">
+                        <div className="py-1">
+                           <Link className="block px-4 py-2 text-sm text-gray-700" to={'/profile'}>  Profile </Link>
+                           <button className="block px-4 py-2 text-sm text-gray-700"> Logout</button>
+                        </div>
+                     </div>}
                   </div>}
-               </div>}
             </div>
          </div>
          <nav className='w-full bg-black text-white md:flex justify-center items-center p-3'>
@@ -74,23 +75,24 @@ function Header() {
             <div className='flex justify-between items-center text-2xl md:hidden text-white'>
                <button onClick={() => setListStatus(true)}><FaBarsProgress className='text-white' /></button>
                {/* login link */}
-               { !token? <Link to={"/login"}>
+               {!token ? <Link to={"/login"}>
                   <button className='border border-black rounded px-3 py-2 ms-3 hover:bg-black hover:text-white'>
                      <CiUser />Login
                   </button>
                </Link>
-               :
-               <div className="relative inline-block text-left">
-                  <button onClick={() => setDropDown(!dropDown)} className="w-full  px-3 py-2 bg-gray-500 shadow-xs hover:bg-gray-50 rounded">
-                     <img width={'40px'} height={'40px'} style={{ borderRadius: '50%' }} className="mx-2" src={dp? dp : "http://pluspng.com/img-png/user-png-icon-male-user-icon-512.png"} alt="user" />
-                  </button>
-                  { dropDown && <div className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden">
-                     <div className="py-1">
-                        <Link className="block px-4 py-2 text-sm text-gray-700" to={'/profile'}> Profile </Link>
-                        <button className="block px-4 py-2 text-sm text-gray-700"> Logout</button>
-                     </div>
-                  </div> }
-               </div>}
+                  :
+                  <div className="relative inline-block text-left">
+                     <button onClick={() => setDropDown(!dropDown)} className="w-full  px-3 py-2 bg-gray-500 shadow-xs hover:bg-gray-50 rounded">
+                        <img width={'40px'} height={'40px'} style={{ borderRadius: '50%' }} className="mx-2"
+                           src={dp == "" ? "http://pluspng.com/img-png/user-png-icon-male-user-icon-512.png" : dp.startsWith('https://lh3.googleusercontent.com/') ? dp : `${server_url}/uploads/${dp}`} alt="user" />
+                     </button>
+                     {dropDown && <div className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden">
+                        <div className="py-1">
+                           <Link className="block px-4 py-2 text-sm text-gray-700" to={'/profile'}> Profile </Link>
+                           <button className="block px-4 py-2 text-sm text-gray-700"> Logout</button>
+                        </div>
+                     </div>}
+                  </div>}
             </div>
 
             <ul className={listStatus ? 'flex flex-col' : 'md:flex justify-center items-center hidden'}>
