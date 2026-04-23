@@ -12,6 +12,8 @@ import { useState } from 'react'
 import Admincollection from './Admin/Pages/Admincollection'
 import Adminprofile from './Admin/Pages/Adminprofile'
 import Profile from './user/pages/Profile'
+import Paymentsuccess from './user/pages/Paymentsuccess'
+import Paymenterr from './user/pages/Paymenterr'
 
 function App() {
   
@@ -33,6 +35,8 @@ function App() {
         {/* user */}
         <Route path='/profile' element={<Profile />} />
         <Route path='/view/:id' element={<Viewbook />} />
+        <Route path='/payment-success' element={<Paymentsuccess />} />
+        <Route path='/payment-failed' element={<Paymenterr />} />
 
         {/* admin */}
         <Route path='/admin/home' element={<Adminhome />} />

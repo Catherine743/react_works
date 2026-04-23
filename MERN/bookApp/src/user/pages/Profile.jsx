@@ -4,7 +4,7 @@ import { FaUserCircle } from 'react-icons/fa'
 import Edit from '../components/Edit'
 import { FaPlus } from 'react-icons/fa6'
 import { Bounce, ToastContainer, toast } from 'react-toastify'
-import { addBookAPI, getUserProfileBooksAPI, getUserPurchasedAPI } from '../../services/allAPI'
+import { addBookAPI, getUserProfileBooksAPI, getUserPurchasedAPI, removeBooksAPI } from '../../services/allAPI'
 import { server_url } from '../../services/server_url'
 
 function Profile() {
@@ -136,7 +136,23 @@ function Profile() {
       console.log("Error");
     }
   }
-  console.log(purchaseBooks);
+  
+  const removeBooks = async(id) => {
+    const token = sessionStorage.getItem("token")
+    if (token) {
+      const reqHeader = {
+        "Authorization": `Bearer ${token}`
+      }
+      const result = await removeBooksAPI(id, reqHeader)
+      if (result.status == 200) {
+        toast.success("Book details deleted")
+        getUserBooks()
+      }
+      else {
+        console.log(result);
+      }
+    }
+  }
 
   return (
     <div>
@@ -271,7 +287,7 @@ function Profile() {
                 <div className='px-4 mt-4 md:mt-0'>
                   <img src={book.imageUrl} alt="book" className='w-full' />
                   <div className='mt-4 flex justify-end'>
-                    <button className='py-2 px-3 rounded bg-red-600 text-white ms-3 hover:bg-white hover:border hover:text-red-600 hover:border-red-600'>
+                    <button onClick={() => removeBooks(book?._id)} className='py-2 px-3 rounded bg-red-600 text-white ms-3 hover:bg-white hover:border hover:text-red-600 hover:border-red-600'>
                       Delete
                     </button>
                   </div>

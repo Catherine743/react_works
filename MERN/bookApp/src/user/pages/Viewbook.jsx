@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { FaTimes } from 'react-icons/fa';
 import { FaArrowLeft, FaCamera, FaEye } from 'react-icons/fa6'
-import { viewBookAPI } from '../../services/allAPI';
+import { makePaymentAPI, viewBookAPI } from '../../services/allAPI';
 import { useParams } from 'react-router-dom';
 import { server_url } from '../../services/server_url';
+import { loadStripe } from '@stripe/stripe-js';
 
 function Viewbook() {
   const [showModal, setShowModal] = useState(false);
@@ -33,7 +34,25 @@ function Viewbook() {
     }
   }
 
-  console.log(book);
+  // console.log(book);
+
+  const makePayment = async () => {
+    const stripe = await loadStripe('pk_test_51TPFp61IQU7P5QOkkLogktAvp83pq9Q4LVem03maV8xaSfCZk24gO29ov8yR1lMtyEo3NBEfudyrBchheV3uFGhv00iPHGw7b0')
+    // console.log(stripe);
+    const token = sessionStorage.getItem("token")
+    if (token) {
+      const reqHeader = {
+        "Authorization": `Bearer ${token}`
+      }
+      const result = await makePaymentAPI(id, reqHeader)
+      console.log(result.data);
+      const {checkOutURL} = result.data
+      window.location.href = checkOutURL
+    }
+    else {
+      console.log("Error");
+    }
+  }
 
   return (
     <div className="bg-gray-100 min-h-screen p-10">
@@ -84,7 +103,7 @@ function Viewbook() {
             <button className="bg-blue-700 text-white px-4 py-2 rounded">
               <FaArrowLeft /> Back
             </button>
-            <button className="bg-green-700 text-white px-4 py-2 rounded">
+            <button onClick={makePayment} className="bg-green-700 text-white px-4 py-2 rounded">
               Buy $ 23
             </button>
           </div>
@@ -117,7 +136,7 @@ function Viewbook() {
               <div className="flex gap-6 justify-center">
 
                 {
-                  book?.uploadImg?.length > 0 ? book.uploadImg.map((index, filename) => (
+                  book?.uploadImg?.length > 0 ? book.uploadImg.map((filename, index) => (
                     <img key={index} width={'250px'} height={'250px'} className='mx-2 md:mb-0 mb-2' src={`${server_url}/uploads/${filename}`} alt="book images" />
                   )) :
                     <p>Nothing to display</p>

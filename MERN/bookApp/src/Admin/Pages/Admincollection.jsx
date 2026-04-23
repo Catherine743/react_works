@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Adminheader from '../Components/Adminheader';
 import Adminsidebar from '../Components/Adminsidebar';
-import { getAllAdminBooksAPI, getAllAdminUsersAPI } from '../../services/allAPI';
+import { getAllAdminBooksAPI, getAllAdminUsersAPI, getUpdateBookStatusAPI } from '../../services/allAPI';
 import { server_url } from '../../services/server_url';
-
+import { Bounce, toast, ToastContainer } from 'react-toastify';
 function Admincollection() {
   const [bookListStatus, setBookListStatus] = useState(true);
   const [usersListStatus, setUsersListStatus] = useState(false);
@@ -43,7 +43,21 @@ function Admincollection() {
     }
   }
 
-  console.log(allUsers);
+  const getUpdateBooks = async (bookId) => {
+    const token = sessionStorage.getItem("token")
+    if (token) {
+      const reqHeader = {
+        "Authorization": `Bearer ${token}`
+      }
+      const result = await getUpdateBookStatusAPI(bookId, reqHeader)
+      if (result.status == 200) {
+        toast.success("Book Approved")
+        getAllBooks(token)
+      } else {
+        console.log(result);
+      }
+    }
+  }
 
   return (
     <div>
@@ -75,19 +89,21 @@ function Admincollection() {
                     <p className='text-blue-700 font-bold text-lg'>{book?.author}</p>
                     <p>{book?.title}</p>
                     <p>$ {book?.price}</p>
-                    <button
+                    { book?.status != "Approved"?
+                    <button onClick={() => getUpdateBooks(book?._id)}
                       className='p-3 rounded border bg-green-700 w-full text-white hover:border-green-600 hover:bg-white 
                     hover:text-green-700'>
                       Approve
                     </button>
+                    :
                     <div className='flex justify-end w-full'>
                       <img
                         src="https://static.vecteezy.com/system/resources/previews/017/177/791/original/round-check-mark-symbol-with-transparent-background-free-png.png"
                         alt="tick mark" width={'40px'} height={'40px'} />
-                    </div>
+                    </div>}
                   </div>
                 </div>
-              )) : null}
+              )) : <p> Loading.....</p>}
             </div>
           }
           {
@@ -111,11 +127,17 @@ function Admincollection() {
                     </div>
                   </div>
                 </div>
-              )) : null}
+              )) : <p> Loading...</p>}
             </div>
           }
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        theme="colored"
+        transition={Bounce}
+      />
     </div>
   )
 }

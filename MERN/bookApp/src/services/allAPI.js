@@ -60,3 +60,18 @@ export const getAllAdminBooksAPI = async (reqHeader) => {
 export const getAllAdminUsersAPI = async (reqHeader) => {
     return await commonAPI("GET", `${server_url}/admin/all-users`,{}, reqHeader)
 }
+
+// admin-getUpdateBookStatusAPI
+export const getUpdateBookStatusAPI = async (id, reqHeader) => {
+    return await commonAPI("PUT", `${server_url}/admin/${id}/update`, {}, reqHeader)
+}
+
+// removeBooksAPI
+export const removeBooksAPI = async (id, reqHeader) => {
+    return await commonAPI("DELETE", `${server_url}/user/${id}/delete`, {}, reqHeader)
+}
+
+// makePaymentAPI
+export const makePaymentAPI = async (id, reqHeader) => {
+    return await commonAPI("PUT", `${server_url}/user/${id}/buy`, {}, reqHeader)
+}
